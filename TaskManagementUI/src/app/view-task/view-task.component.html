@@ -1,0 +1,76 @@
+<div class="container col-md-14 p-0 m-10">
+    <div class="col col-md-1">
+        <b><label>Project: </label></b>
+    </div>
+    <div class="col col-md-5">
+        <input type="text" name="projectName" readonly class="form-control" ng-model=viewTaskService.project>
+    </div>
+    <div class="col col-md-1">
+        <button class="btn btn-default border" style="border-radius: 10%" title="search">Search</button>
+    </div>
+    <div class="col col-md-1">
+        <label style="padding-left: 10%">Sort By :</label>
+    </div>
+    <div class="col col-md-4">
+        <button type="button" style="width: 60px; height: 30px; font-size: 10px;">Start Date</button>
+        &nbsp;<button type="button" style="width: 60px; height: 30px; font-size: 10px;">End Date</button>
+        &nbsp;<button type="button" style="width: 60px; height: 30px; font-size: 10px;">Priority</button>
+        &nbsp;<button type="button" style="width: 60px; height: 30px; font-size: 10px;">Completed</button>
+        &nbsp;
+    </div>
+</div>
+<hr style="border-style: dotted">
+<br>
+<div class="ccontainer col-md-14 p-0 m-20">
+      
+      <table class="table table-borderless taskTable" *ngFor="let task of viewTaskService.tasks">
+        <thead style ="height: 20px;">
+            <tr style="height: 20px;">
+                <td style="width: 80px; height: 10px; font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px">Task</td>
+                <td style="width: 100px; height: 10px;font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px">Parent</td>
+                <td style="width: 100px; height: 10px;font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px">Priority</td>
+                <td style="width: 200px; height: 10px;font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px">Start Date</td>
+                <td style="width: 200px; height: 10px;font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px">End Date</td>
+                <td style="width: 80px; height: 10px;font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px"></td>
+                <td style="width: 180px; height: 10px;font-weight: bold;font-size: 12px; padding-top: 0px;padding-bottom: 0px"></td>
+            </tr>
+        </thead>
+        <tbody style ="height: 20px;">
+            <tr style ="height: 20px;">
+                <td style ="width: 80px; height: 20px;">
+                    <label style ="width: 80px; height: 20px; font-size: 12px; font-weight: normal;text-align :left; background-color:#f2f2f2 ; ">
+                        {{task.Task_Id}}
+                    </label>
+                </td>
+                <td style ="width: 100px; height: 20px;">
+                        <label style ="width: 80px; height: 20px; font-size: 12px; font-weight: normal;text-align :left; background-color:#f2f2f2 ; ">
+                            {{task.Parent_Id}}
+                        </label>
+                </td>
+                <td style ="width: 100px; height: 20px;">
+                        <label style ="width: 80px; height: 20px; font-size: 12px; font-weight: normal;text-align :left; background-color:#f2f2f2 ; ">
+                            {{task.Priority}}
+                        </label>
+                </td>
+                <td style ="width: 150px; height: 20px;">
+                        <label style ="width: 150px; height: 20px; font-size: 12px; font-weight: normal;text-align :left; background-color:#f2f2f2 ; ">
+                            {{task.Start_Date}}
+                        </label>
+                </td>
+                <td style ="width: 150px; height: 20px;">
+                        <label style ="width: 150px; height: 20px; font-size: 12px; font-weight: normal;text-align :left; background-color:#f2f2f2 ; ">
+                            {{task.End_Date}}
+                        </label>
+                </td>
+                <td style ="width: 50px; height: 20px;">
+                        <button type="button" style="width: 60px; height: 30px; font-size: 10px;">Edit</button>
+                </td>
+                <td style ="width: 50px; height: 20px;">
+                        <button type="button" style="width: 60px; height: 30px; font-size: 10px;">End Task</button>   
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
