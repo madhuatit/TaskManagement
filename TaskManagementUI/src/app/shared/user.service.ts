@@ -19,6 +19,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUserList(){
+    console.log('getUserList called');
     return this.http.get(this.baseURL);
   }
 

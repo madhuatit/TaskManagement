@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     var project = new Project({
         Project_Id: req.body.Project_Id,
-        Project: req.body.Project,
+        Project_Name: req.body.Project,
         Start_Date: req.body.Start_Date,
         End_Date: req.body.End_Date,
         Priority: req.body.Priority

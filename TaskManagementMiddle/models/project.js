@@ -10,7 +10,7 @@ var options = {
 
 var projectSchema = new mongoose.Schema({
 Project_Id: {type : Number},
-Project: {type : String},
+Project_Name: {type : String},
 Start_Date: {type : Date},
 End_Date: {type : Date},
 Priority: {type : Number},

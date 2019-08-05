@@ -30,8 +30,10 @@ router.get('/', (req, res) => {
             }
         });
     }else{
+        console.log('inside user else part');
         User.find((err, docs) => {
             if(!err) {
+                console.log(docs.length);
                 res.send(docs);
             }else{
                 console.log('Error in retrieving User Details' + JSON.stringify(err, undefined, 2));

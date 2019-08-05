@@ -70,13 +70,14 @@ router.delete('/:id', (req, res) => {
 router.post('/', (req, res) => {
     var task = new Task({
         Task_Id: req.body.Task_Id,
-        Parent_Id: req.body.Parent_Id,
-        Project_Id: req.body.Project_Id,
+        Parent: req.body.Parent,
+        Project: req.body.Project,
         Task_Name: req.body.Task_Name,
         Start_Date: req.body.Start_Date,
         End_Date: req.body.End_Date,
         Priority: req.body.Priority,
-        Status: req.body.Status
+        Status: req.body.Status,
+        User: req.body.User
     });
     task.save((err, docs) => {
         if(!err){
@@ -85,6 +86,6 @@ router.post('/', (req, res) => {
             console.log('Error in saving task details: ' + JSON.stringify(err, undefined, 2));
         }
     });
-})
+});
 
 module.exports = router;

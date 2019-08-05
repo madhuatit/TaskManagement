@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
-import {AddTask} from './add-task.model';
+import {AddTask, ParentTask} from './add-task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,28 @@ import {AddTask} from './add-task.model';
 export class AddTaskService {
 
   selectedTask  : AddTask = new AddTask();
+  ParentTask = new ParentTask();
   tasks : AddTask[];
-  readonly baseURL = 'http://localhost:3000/user';
+  readonly baseURL = 'http://localhost:3000/';
   
   constructor(private http: HttpClient) { }
+
+  postParentTask(parent : ParentTask){
+    console.log(parent);
+    return this.http.post(this.baseURL+'parent', parent);
+  }
+
+  getParentList(){
+    return this.http.get(this.baseURL + 'parent');
+  }
+
+  getSearchParentList(searchKey: string){
+    let params =  new HttpParams().set("searchKey", searchKey);
+    //params.append('searchKey', searchKey);
+    return this.http.get(this.baseURL + 'parent', {params: params});
+  }
+
+  postNewTask(addTask: AddTask){
+    return this.http.post(this.baseURL+'task', addTask);
+  }
 }
