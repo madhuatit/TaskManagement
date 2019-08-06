@@ -27,4 +27,14 @@ export class ProjectService {
     //params.append('searchKey', searchKey);
     return this.http.get(this.baseURL, {params: params});
   }
+
+  getSortProjectList(sortKey: string){
+    let params = new HttpParams().set("sortKey", sortKey);
+    return this.http.get(this.baseURL, {params: params});
+  }
+
+  postNewProject(project: Project){
+    return this.http.post(this.baseURL, project);
+  }
+
 }
