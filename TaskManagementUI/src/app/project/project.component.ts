@@ -97,7 +97,7 @@ export class ProjectComponent implements OnInit {
 
       this.projectToAdd.Start_Date = moment(this.startDate).add(-1, 'months').toDate();
       this.projectToAdd.End_Date = moment(this.endDate).add(-1, 'months').toDate();
-
+      console.log('project Start Date: ' + this.projectToAdd.Start_Date);
       this.projectService.postNewProject(this.projectToAdd).subscribe((res) => {
         console.log('add Project completed');
       });
@@ -115,6 +115,15 @@ export class ProjectComponent implements OnInit {
     this.projectService.getSortProjectList(sortKey).subscribe((res) => {
       this.projectService.projects = res as Project[];
     })
+  }
+
+  editProject(project: Project){
+    this.EditOrAdd = "Update";
+    this.projectToAdd = project;
+    this.selectedUsr = project.User;
+    console.log(this.selectedUser.First_Name);
+    this.selectedUserName = project.User.First_Name + '' + project.User.Last_Name;
+    //this.projectToAdd.Start_Date = moment(this.projectToAdd.Start_Date).format('MM-DD-YYYY');
   }
 
 }

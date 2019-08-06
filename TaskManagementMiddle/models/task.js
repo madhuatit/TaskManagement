@@ -10,7 +10,7 @@ var taskSchema = new mongoose.Schema({
     Start_Date: {type : Date},
     End_Date: {type : Date},
     Priority: {type : Number},
-    Status: {type : String},
+    Status: {type : Number, default: 0},
     User: {type: Schema.Types.ObjectId, ref: 'user'}
 });
 

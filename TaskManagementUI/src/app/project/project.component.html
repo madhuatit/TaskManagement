@@ -26,7 +26,8 @@
                             <label  >End Date:</label> &nbsp;&nbsp;&nbsp; 
                                           
                             <input  placeholder="yyyy-mm-dd" [disabled]="!isStartEndDate"
-                                    name="dp" [(ngModel)]="endDate" ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()">
+                                    name="dp" [(ngModel)]="endDate" ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()"
+                                    >
                                    
                                 
                         </div>
@@ -96,19 +97,17 @@
                   <table style="background-color:#f2f2f2 ; width: 100%" cellpadding=2>
                     <tr>
                       <td id="dispProject">
-                        Project: <b><input type="text" [value]="project.Project_Name" id="projectName" readonly class="form-control" ></b>
+                        Project: <b>{{project.Project_Name}}</b>
                       </td>
                     </tr>
+                    
                     <tr>
-                      <td colspan="2">&nbsp;</td>
+                      <td >No of Tasks: {{project.TotalTasks}}</td>
+                      <td>Completed: {{project.CompletedTasks}}</td>
                     </tr>
                     <tr>
-                      <td >No of Tasks: <input type="text" [value]="project.Project_Name" id="projectName" readonly class="form-control" ></td>
-                      <td>Completed: <input type="text" [value]="project.Project_Name" id="projectName" readonly class="form-control" ></td>
-                    </tr>
-                    <tr>
-                      <td id="dispstartdate">Start Date: <input type="text" [value]="project.Start_Date" id="startDate" readonly class="form-control" ></td>
-                      <td id="dispenddate">End Date: <input type="text" [value]="project.End_Date" id="endDate" readonly class="form-control" ></td>
+                      <td id="dispstartdate">Start Date: {{project.Start_Date| date: 'dd-MM-yyyy'}}</td>
+                      <td id="dispenddate">End Date: {{project.End_Date| date: 'dd-MM-yyyy'}}</td>
                     </tr>
                   </table>
                 </div>
@@ -123,7 +122,7 @@
                     <tr height="80%" style="background-color:#f2f2f2">
                       <td>
                         <div>
-                          <span id="disppriority"><input type="text" [value]="project.Priority" id="priority" readonly class="form-control" ></span>
+                          <span id="disppriority">{{project.Priority}}</span>
                         </div>
                       </td>
                     </tr>
@@ -134,7 +133,7 @@
                   <table cellpadding=5>
                     <tr>
                       <td>
-                        <button type="button" style="width :75px">Update</button> &nbsp;
+                        <button type="button" style="width :75px" (click)="editProject(project)">Update</button> &nbsp;
                       </td>
                     </tr>
                     <tr>

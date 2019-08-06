@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
 
     var queryVar = req.query;
     console.log('search value: ' + queryVar.searchKey);
+    
 
     if(queryVar.searchKey){
 
@@ -22,7 +23,7 @@ router.get('/', (req, res) => {
         
     }else if(queryVar.sortKey){
 
-        Project.find().sort([[queryVar.sortKey, 1]]).exec(function(err, docs) {
+        Project.find().populate('Task', ['Task_Id', 'Status']).sort([[queryVar.sortKey, 1]]).exec(function(err, docs) {
             if(!err){
                 res.send(docs);
             }else{
@@ -30,14 +31,27 @@ router.get('/', (req, res) => {
             }
         });
     }else{
-        Project.find((err, docs) => {
+        /* var Query = Project.find();
+        Query
+            .populate('Task', ['Task_Id', 'Status'])
+            .exec(function (err, projects) {
+                if (err) {
+                console.log('madhu error');
+                }
+                else {
+                res.send(projects);
+                }
+            }); */
+         Project.find((err, docs) => {
             if(!err){
                 console.log(docs);
                 res.send(docs);
             }else{
                 console.log('Error in Retriving project details: ' + JSON.stringify(err, undefined, 2));
             }
-        });
+        }).populate('Task', ['Task_Id', 'Status']); 
+
+      
     }
 });
 
