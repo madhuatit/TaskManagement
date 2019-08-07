@@ -4,10 +4,11 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { AddTaskService} from '../shared/add-task.service';
 import { UserService } from '../shared/user.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup } from '@angular/forms';
 import { Project } from '../shared/project.model';
 import { User } from '../shared/user.model';
 import { ProjectService} from '../shared/project.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 import * as moment from 'moment';
 
@@ -28,9 +29,11 @@ export class ProjectComponent implements OnInit {
   searchText: string;
   selectedUsr: User;
   users: Array<User>;
-
   startDate: Date;
   endDate: Date;
+  isEdit: boolean;
+  editProjectId: number;
+  userObjId: string;
 
 
   constructor(private projectService: ProjectService, private modelService: BsModalService,
@@ -42,6 +45,7 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.EditOrAdd = "Add";
     this.getProjectList();
+    this.isEdit = false;
   }
   openModal(template: TemplateRef<any>, type: number) {
     
@@ -95,12 +99,26 @@ export class ProjectComponent implements OnInit {
 
   addUpdateProject(){
 
+    if(!this.isEdit){
       this.projectToAdd.Start_Date = moment(this.startDate).add(-1, 'months').toDate();
       this.projectToAdd.End_Date = moment(this.endDate).add(-1, 'months').toDate();
-      console.log('project Start Date: ' + this.projectToAdd.Start_Date);
+      console.log('project Start Date: ' + this.projectToAdd.Project_Name);
       this.projectService.postNewProject(this.projectToAdd).subscribe((res) => {
         console.log('add Project completed');
       });
+      this.getProjectList();
+      this.resetForm();
+    }else{
+      this.projectToAdd.Start_Date = moment(this.startDate).add(-1, 'months').toDate();
+      this.projectToAdd.End_Date = moment(this.endDate).add(-1, 'months').toDate();
+      console.log('project Start Date: ' + this.projectToAdd.Project_Name);
+      this.projectToAdd.Project_Id = this.editProjectId;
+      this.projectService.putProject(this.projectToAdd).subscribe((res) => {
+        console.log('add Project completed');
+      });
+      this.getProjectList();
+      this.resetForm();
+    }  
   }
 
   searchProject(searchKey: string){
@@ -120,10 +138,48 @@ export class ProjectComponent implements OnInit {
   editProject(project: Project){
     this.EditOrAdd = "Update";
     this.projectToAdd = project;
-    this.selectedUsr = project.User;
-    console.log(this.selectedUser.First_Name);
+    this.userService.getUserList().subscribe((res)=>{
+      this.users = res as User[];
+      //console.log(this.users[0].User_Id);
+      this.selectedUserName = this.users.find(
+        x=> x._id === project.User.toString()).First_Name;
+        console.log(this.selectedUserName);
+    });
+    
+    //this.userService.getSearchUserList();
     this.selectedUserName = project.User.First_Name + '' + project.User.Last_Name;
-    //this.projectToAdd.Start_Date = moment(this.projectToAdd.Start_Date).format('MM-DD-YYYY');
+    this.isStartEndDate = true;
+    let newStartDate = new Date(this.projectToAdd.Start_Date);
+    var projstartDate, projendDate;
+
+    projstartDate = <NgbDateStruct>{ year  : newStartDate.getFullYear(), month : newStartDate.getMonth() + 1,day   : newStartDate.getDate()  };
+    this.startDate = projstartDate;
+    projendDate = <NgbDateStruct>{ year  : newStartDate.getFullYear(), month : newStartDate.getMonth() + 1,day   : newStartDate.getDate()  };
+    this.endDate = projendDate;
+    this.isEdit = true;
+    this.editProjectId = project.Project_Id;
+    
+    
+  }
+
+  suspendProject(project: Project){
+    this.projectService.removeProject(project).subscribe((res) => {
+      console.log('deleted');
+      this.resetForm();
+      this.getProjectList();
+    });
+  }
+
+  resetForm(){
+    this.projectToAdd = new Project();
+    this.isEdit = false;
+    this.EditOrAdd = "Add";
+    this.selectedUserName="";
+    this.isStartEndDate=false;
+    this.projectToAdd.Priority=0;
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.getProjectList();
   }
 
 }

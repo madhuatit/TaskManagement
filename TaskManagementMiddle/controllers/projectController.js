@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     var project = new Project({
         Project_Id: req.body.Project_Id,
-        Project_Name: req.body.Project,
+        Project_Name: req.body.Project_Name,
         Start_Date: req.body.Start_Date,
         End_Date: req.body.End_Date,
         Priority: req.body.Priority,
@@ -71,6 +71,60 @@ router.post('/', (req, res) => {
             console.log('Error in saving project details: ' + JSON.stringify(err, undefined, 2));
         }
     });
-})
+});
+
+router.put('/:Project_Id', (req, res) => {
+    console.log('Node controller: ' + JSON.stringify(req.params.Project_Id));
+      /* if(!ObjectId.isValid(req.params.User_Id)){
+        console.log(req.params.User_Id);
+        return res.status(400).send('No records with given Id found : $(req.params.User_Id)');
+    }else{  */
+        let projId = req.params.Project_Id;
+        Project.findOne({Project_Id: projId}, (err, projData) =>{
+            if(err){
+
+            }else{
+                if(projData){
+                    projData.Project_Name = req.body.Project_Name;
+                    projData.Start_Date = req.body.Start_Date;
+                    projData.End_Date = req.body.End_Date;
+                    projData.Priority = req.body.Priority;
+                    projData.User = req.body.User;
+
+                    projData.save((err, projData) => {
+                        if(err){
+
+                        }else{
+                            res.send(projData);
+                        }
+                    });
+                }
+            }
+        });
+        
+    //}
+});
+
+router.delete('/:Project_Id', (req, res) => {
+    /* if(!ObjectId.isValid(req.params.User_Id)){
+        return res.Status(400).send('No records with given id found: ' + $(req.params.Employee_Id));
+    }else{ */
+        /* User.findOneAndDelete(req.params.Employee_Id, (err, doc) => {
+            if(!err){
+                res.send(doc);
+            }else{
+                console.log('Error in User Delete: ' + JSON.stringify(err, undefined, 2));
+            }
+        }); */
+        Project.deleteOne({Project_Id: req.params.Project_Id}, function(err, docs) {
+            if(!err){
+                console.log('inside delete');
+                res.send(docs);
+            }else{
+                console.log('Error in User Delete: ' + JSON.stringify(err, undefined, 2));
+            }
+        })
+   // }
+});
 
 module.exports = router;

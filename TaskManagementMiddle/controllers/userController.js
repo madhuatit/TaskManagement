@@ -55,6 +55,18 @@ router.get('/:User_Id', (req, res) => {
     } 
 });
 
+router.get('/:_id', (req, res) => {
+    console.log(JSON.stringify(req.params._id));
+     if(!ObjectId.isValid(req.params._id)){
+        return res.status(400).send('No records for given user id: $(req.params.id)');
+    }else{
+        User.findById(req.params._id, (err, doc) => {
+            if(!err) return res.send(doc);
+            else console.log('Error in retrieving User' + JSON.stringify(err, undefined, 2));
+        });
+    } 
+});
+
 router.post('/', (req, res) => {
     var usr = new User({
         User_Id: req.body.User_Id,

@@ -44,6 +44,11 @@ export class UserService {
     return this.http.get(this.baseURL, {params: params});
   }
 
+  getUserForId(id: any){
+    let parms = new HttpParams().set("_id", id);
+    return this.http.get(this.baseURL, {params: parms});
+  }
+
   removeUser(usr: User){
     return this.http.delete(this.baseURL + '/' + usr.Employee_Id);
   }

@@ -37,4 +37,13 @@ export class ProjectService {
     return this.http.post(this.baseURL, project);
   }
 
+  putProject(project: Project){
+    console.log('in user service : ' + project.Project_Id);
+    return this.http.put(this.baseURL + '/' + project.Project_Id, project);
+  }
+
+  removeProject(project: Project){
+    return this.http.delete(this.baseURL + '/' + project.Project_Id);
+  }
+
 }
