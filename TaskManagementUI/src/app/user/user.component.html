@@ -1,99 +1,104 @@
 <div class=" container col-md-10">
-<div class="container col-md-10">
+  <div class="container col-md-10">
     <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
-        <input type="hidden" class="form-control" name="User_Id" #name="ngModel" [(ngModel)]="userService.selectedUser.User_Id">
-        <div class="form-group row col-md-14">
-                <div class="col col-md-2">
-                    <label for="firstname">First Name:
-                        <label class="red-text">*</label>
-                    </label>
-                </div>
-                <div class="col col-md-5 float-right">
-                        <input type="text" class="form-control" name="First_Name" #name="ngModel" [(ngModel)]="userService.selectedUser.First_Name" placeholder="Enter the First Name">
-                </div>
+      <input type="hidden" class="form-control" name="User_Id" #name="ngModel"
+        [(ngModel)]="userService.selectedUser.User_Id">
+      <div class="form-group row col-md-14">
+        <div class="col col-md-2">
+          <label for="firstname">First Name:
+            <label class="red-text">*</label>
+          </label>
         </div>
-        <div class="form-group row col-md-14">
-                <div class="col col-md-2">
-                    <label for="firstname">Last Name:
-                            <label class="red-text">*</label>
-                    </label>
-                </div>
-                <div class="col col-md-5 float-right">
-                        <input type="text" class="form-control" name="Last_Name" #name="ngModel" [(ngModel)]="userService.selectedUser.Last_Name" placeholder="Enter the Last Name">
-                </div>
-        </div>
-        <div class="form-group row col-md-14">
-                <div class="col col-md-2">
-                    <label for="firstname">Employee Id:
-                            <label class="red-text">*</label>
-                    </label>
-                </div>
-                <div class="col col-md-3 float-right">
-                        <input type="text" class="form-control" name="Employee_Id" #name="ngModel" [(ngModel)]="userService.selectedUser.Employee_Id" placeholder="Enter the Employee Id">
-                </div>
-        </div>
-        <div class="form-group row col-md-10 float-right">
-                
-                    <button class="col col-md-2" type="submit">{{EditOrAdd}}</button>&nbsp;
-                    <button class="col col-md-2" type="button" (click)="resetForm(userForm)">Reset</button>
-                
-                  
-        </div>
-        <br>
-        <hr style="border-style: solid"> 
-    </form>   
-</div>
-<div class="container col-md-10">
-        <div class="row col-md-10">
-          <div class="col col-md-5">
-            <input type="text" class="form-control" placeholder="Search..." name="search" (input)="searchUsers($event.target.value)">
-          </div>
-          <div class="col col-md-1 float-right">
-            <label>Sort:</label>
-          </div>
-          <div class="col col-md-5">
-            <button type="button" (click)="sortUsers('First_Name')" >First Name</button> &nbsp;
-            <button type="button" (click)="sortUsers('Last_Name')" >Last Name</button> &nbsp;
-            <button type="button" (click)="sortUsers('Employee_Id')">Id</button>
-          </div>
-        </div>
-    
-        <br/>
-        <hr>
-</div>
-<div class="container col-md-16">
-        <div class="list-group col-md-16" *ngFor="let user of userService.users">
-          <div class="list-item col-md-16" >
-    
-            <div class="row col-md-10">
-              <div class="col col-md-9 float-left">
-                <input type="text" [value]="user.First_Name" id="firstName" readonly class="form-control" >
-              </div>
-              <div class="col col-md-3 float-right">
-                <button class="col col-md-10" type="button" (click)="editUser(user)">Edit</button>
-              </div>
-            </div>
-    
-            <div class="row col-md-10">
-              <div class="col col-md-9 float-left">
-                <input type="text" [value]="user.Last_Name" id="lastName" readonly class="form-control" >
-              </div>
-              <div class="col col-md-3 float-right">
-                <button class="col col-md-10" type="button" (click)="deleteUser(user)">Delete</button>
-              </div>
-            </div>
-    
-            <div class="row col-md-10">
-              <div class="col col-md-4 float-left">
-                <input type="text" [value]="user.Employee_Id" id="employeeId" readonly class="form-control" >
-              </div>
-             <div class="col col-md-2 float-right">
-                <input type="hidden">
-              </div>
-            </div>
-          </div>
-        <hr>
+        <div class="col col-md-5 float-right">
+          <input type="text" class="form-control" name="First_Name" #name="ngModel"
+            [(ngModel)]="userService.selectedUser.First_Name" placeholder="Enter the First Name">
         </div>
       </div>
+      <div class="form-group row col-md-14">
+        <div class="col col-md-2">
+          <label for="firstname">Last Name:
+            <label class="red-text">*</label>
+          </label>
+        </div>
+        <div class="col col-md-5 float-right">
+          <input type="text" class="form-control" name="Last_Name" #name="ngModel"
+            [(ngModel)]="userService.selectedUser.Last_Name" placeholder="Enter the Last Name">
+        </div>
+      </div>
+      <div class="form-group row col-md-14">
+        <div class="col col-md-2">
+          <label for="firstname">Employee Id:
+            <label class="red-text">*</label>
+          </label>
+        </div>
+        <div class="col col-md-3 float-right">
+          <input type="text" class="form-control" name="Employee_Id" #name="ngModel"
+            [(ngModel)]="userService.selectedUser.Employee_Id" placeholder="Enter the Employee Id">
+        </div>
+      </div>
+      <div class="form-group row col-md-10 float-right">
 
+        <button class="col col-md-2" type="submit">{{EditOrAdd}}</button>&nbsp;
+        <button class="col col-md-2" type="button" (click)="resetForm(userForm)">Reset</button>
+
+
+      </div>
+      <br>
+      <hr style="border-style: solid">
+    </form>
+  </div>
+  <div class="container col-md-10">
+    <div class="row col-md-10">
+      <div class="col col-md-5">
+        <input type="text" class="form-control" placeholder="Search..." name="search"
+          (input)="searchUsers($event.target.value)">
+      </div>
+      <div class="col col-md-1 float-right">
+        <label>Sort:</label>
+      </div>
+      <div class="col col-md-5">
+        <button type="button" (click)="sortUsers('First_Name')">First Name</button> &nbsp;
+        <button type="button" (click)="sortUsers('Last_Name')">Last Name</button> &nbsp;
+        <button type="button" (click)="sortUsers('Employee_Id')">Id</button>
+      </div>
     </div>
+
+    <br />
+    <hr>
+  </div>
+  <div class="container col-md-16">
+    <div class="list-group col-md-16" *ngFor="let user of userService.users">
+      <div class="list-item col-md-16">
+
+        <div class="row col-md-10">
+          <div class="col col-md-9 float-left">
+            <input type="text" [value]="user.First_Name" id="firstName" readonly class="form-control">
+          </div>
+          <div class="col col-md-3 float-right">
+            <button class="col col-md-10" type="button" (click)="editUser(user)">Edit</button>
+          </div>
+        </div>
+
+        <div class="row col-md-10">
+          <div class="col col-md-9 float-left">
+            <input type="text" [value]="user.Last_Name" id="lastName" readonly class="form-control">
+          </div>
+          <div class="col col-md-3 float-right">
+            <button class="col col-md-10" type="button" (click)="deleteUser(user)">Delete</button>
+          </div>
+        </div>
+
+        <div class="row col-md-10">
+          <div class="col col-md-4 float-left">
+            <input type="text" [value]="user.Employee_Id" id="employeeId" readonly class="form-control">
+          </div>
+          <div class="col col-md-2 float-right">
+            <input type="hidden">
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+</div>

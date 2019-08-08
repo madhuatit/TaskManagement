@@ -1,14 +1,12 @@
 import { Component, OnInit, TemplateRef  } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { AddTaskService} from '../shared/add-task.service';
 import { UserService } from '../shared/user.service';
-import { NgForm, FormGroup } from '@angular/forms';
 import { Project } from '../shared/project.model';
 import { User } from '../shared/user.model';
 import { ProjectService} from '../shared/project.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 import * as moment from 'moment';
 
@@ -18,6 +16,8 @@ import * as moment from 'moment';
   styleUrls: ['./project.component.css'],
   providers: [ProjectService]
 })
+
+
 export class ProjectComponent implements OnInit {
 
   modalRef: BsModalRef;
@@ -37,7 +37,7 @@ export class ProjectComponent implements OnInit {
 
 
   constructor(private projectService: ProjectService, private modelService: BsModalService,
-    private userService: UserService) { 
+    private userService: UserService, private toastr: ToastrService) { 
     this.EditOrAdd = "Add";
     this.projectToAdd = new Project();
   }
@@ -46,31 +46,27 @@ export class ProjectComponent implements OnInit {
     this.EditOrAdd = "Add";
     this.getProjectList();
     this.isEdit = false;
+    this.projectToAdd.Priority=0;    
   }
-  openModal(template: TemplateRef<any>, type: number) {
-    
-    if (type === 1) {
-            
+
+  //open the User Pop-Up to select User.
+  openModal(template: TemplateRef<any>, type: number) {    
+    if (type === 1) {            
       this.userService.getUserList().subscribe((res) => {
-        console.log(res);
         this.users = res as User[];
-        this.modalRef = this.modelService.show(template);
-        
+        this.modalRef = this.modelService.show(template);        
       },
         (error) => {
-          console.log(error);
+          this.toastr.error(error);
         });
-
-    }
-    
+    }    
   }
 
+  //selected user name displayed with FirstName + LastName together.
   selectUser(){
     if(this.selectedUsr != null)
-    {
-      console.log(this.selectedUsr.User_Id);
-    this.projectToAdd.User = this.selectedUsr;
-      
+    {      
+    this.projectToAdd.User = this.selectedUsr;      
     this.selectedUserName = this.selectedUsr.First_Name + ' ' + this.selectedUsr.Last_Name;
     this.selectedUsr = null;
     this.searchText ='';
@@ -78,75 +74,105 @@ export class ProjectComponent implements OnInit {
     }
   }
 
+  //cancel pop-up of selecting user.
   cancelUser(){
     this.modalRef.hide();
-    this.selectedUsr=null;
-    
+    this.selectedUsr=null;    
   }
 
+  //selecting the User object index.
   setIndexUser(usr: User) {
     this.selectedUsr = usr;
-    this.searchText = usr.First_Name + ' ' + usr.Last_Name;
-    
+    this.searchText = usr.First_Name + ' ' + usr.Last_Name;    
   }
 
+  //retrieve all the project list.
   getProjectList(){
-    this.projectService.getProjectList().subscribe((res) =>{
-      console.log('received project rec. : ' + res);
+    this.projectService.getProjectList().subscribe((res) =>{      
       this.projectService.projects = res as Project[];
     });
   }
 
+  //Add or Update a Project.
   addUpdateProject(){
 
+    if((!this.projectToAdd.Project_Name) || (this.projectToAdd.Project_Name === '')){
+      this.toastr.warning('Project Name cannot be empty');
+      return;
+    }
+
+    if(this.isStartEndDate){
+      if((!this.startDate) || (!this.endDate)){
+        this.toastr.warning('Kindly Provide StartDate/EndDate');
+        return;
+      }
+    }
+
+    if(!this.selectedUserName){
+      this.toastr.warning('Kindly select User for the Project');
+      return;
+    }
+
+    var strDt = moment(this.startDate).add(-1, 'months').toDate();
+    var endDt = moment(this.endDate).add(-1, 'months').toDate();
+
+    if(strDt > endDt){
+      this.toastr.warning('Start Date should be less than End Date');
+      return;
+    }
     if(!this.isEdit){
       this.projectToAdd.Start_Date = moment(this.startDate).add(-1, 'months').toDate();
       this.projectToAdd.End_Date = moment(this.endDate).add(-1, 'months').toDate();
-      console.log('project Start Date: ' + this.projectToAdd.Project_Name);
-      this.projectService.postNewProject(this.projectToAdd).subscribe((res) => {
-        console.log('add Project completed');
+      
+      this.projectService.postNewProject(this.projectToAdd).subscribe(res => {
+        this.toastr.success('Project Added Successfully');
+        
       });
       this.getProjectList();
       this.resetForm();
-    }else{
+      return;
+      
+      
+    }else if(this.isEdit){
       this.projectToAdd.Start_Date = moment(this.startDate).add(-1, 'months').toDate();
       this.projectToAdd.End_Date = moment(this.endDate).add(-1, 'months').toDate();
-      console.log('project Start Date: ' + this.projectToAdd.Project_Name);
+      
       this.projectToAdd.Project_Id = this.editProjectId;
       this.projectService.putProject(this.projectToAdd).subscribe((res) => {
-        console.log('add Project completed');
+        this.toastr.success('Project Updated Successfully');
       });
       this.getProjectList();
       this.resetForm();
     }  
   }
 
+  //Search Projects based on input key.
   searchProject(searchKey: string){
-    console.log('search value: ' + searchKey);
     this.projectService.getSearchProjectList(searchKey).subscribe((res) =>{
+      if((res as Project[]).length == 0){
+        this.toastr.warning('No Projects found for search criteria');
+      }
       this.projectService.projects = res as Project[];
     });
   }
 
+  //sort the Project
   sortProject(sortKey: string){
-    console.log('sort Key: ' + sortKey);
     this.projectService.getSortProjectList(sortKey).subscribe((res) => {
       this.projectService.projects = res as Project[];
-    })
+    });
   }
 
+  //Update the selected project.
   editProject(project: Project){
     this.EditOrAdd = "Update";
     this.projectToAdd = project;
     this.userService.getUserList().subscribe((res)=>{
       this.users = res as User[];
-      //console.log(this.users[0].User_Id);
       this.selectedUserName = this.users.find(
-        x=> x._id === project.User.toString()).First_Name;
-        console.log(this.selectedUserName);
+        x=> x._id === project.User.toString()).First_Name;        
     });
     
-    //this.userService.getSearchUserList();
     this.selectedUserName = project.User.First_Name + '' + project.User.Last_Name;
     this.isStartEndDate = true;
     let newStartDate = new Date(this.projectToAdd.Start_Date);
@@ -157,19 +183,19 @@ export class ProjectComponent implements OnInit {
     projendDate = <NgbDateStruct>{ year  : newStartDate.getFullYear(), month : newStartDate.getMonth() + 1,day   : newStartDate.getDate()  };
     this.endDate = projendDate;
     this.isEdit = true;
-    this.editProjectId = project.Project_Id;
-    
-    
+    this.editProjectId = project.Project_Id;    
   }
 
+  //suspend the project permenantly
   suspendProject(project: Project){
     this.projectService.removeProject(project).subscribe((res) => {
-      console.log('deleted');
-      this.resetForm();
-      this.getProjectList();
+      this.toastr.success('Project Suspended Successfully.');      
     });
+    this.resetForm();
+    this.getProjectList();
   }
 
+  //reset the Add Project Form.
   resetForm(){
     this.projectToAdd = new Project();
     this.isEdit = false;

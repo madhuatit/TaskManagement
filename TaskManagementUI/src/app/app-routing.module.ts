@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule, ModalModule } from 'ngx-bootstrap';
 import { Ng5SliderModule } from 'ng5-slider';
+import { ToastrModule } from 'ngx-toastr';
 
 
 import { ViewTaskComponent} from './view-task/view-task.component';
@@ -26,6 +27,11 @@ const routes: Routes = [
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     RouterModule.forRoot(routes, { useHash: true }),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
+    }),
     Ng5SliderModule],
     
   exports: [RouterModule]

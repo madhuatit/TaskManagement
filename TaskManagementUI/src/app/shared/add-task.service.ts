@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/observable';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
-import {AddTask, ParentTask} from './add-task.model';
+import { AddTask, ParentTask } from './add-task.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddTaskService {
 
-  selectedTask  : AddTask = new AddTask();
+  selectedTask: AddTask = new AddTask();
   ParentTask = new ParentTask();
-  tasks : AddTask[];
+  tasks: AddTask[];
   readonly baseURL = 'http://localhost:3000/';
-  
+
   constructor(private http: HttpClient) { }
 
-  postParentTask(parent : ParentTask){
-    console.log(parent);
-    return this.http.post(this.baseURL+'parent', parent);
+  postParentTask(parent: ParentTask) {
+    return this.http.post(this.baseURL + 'parent', parent);
   }
 
-  getParentList(){
+  getParentList() {
     return this.http.get(this.baseURL + 'parent');
   }
 
-  getSearchParentList(searchKey: string){
-    let params =  new HttpParams().set("searchKey", searchKey);
-    //params.append('searchKey', searchKey);
-    return this.http.get(this.baseURL + 'parent', {params: params});
+  getSearchParentList(searchKey: string) {
+    let params = new HttpParams().set("searchKey", searchKey);
+    return this.http.get(this.baseURL + 'parent', { params: params });
   }
 
-  postNewTask(addTask: AddTask){
-    return this.http.post(this.baseURL+'task', addTask);
+  postNewTask(addTask: AddTask) {
+    return this.http.post(this.baseURL + 'task', addTask);
   }
 }

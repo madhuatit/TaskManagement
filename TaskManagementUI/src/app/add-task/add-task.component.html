@@ -1,159 +1,163 @@
 <div class="container col-md-6">
-    
-  
-      <div class="row col-md-20 form-group">
-          
-          <div class="col col-md-16">
-            <div class="row col-md-16">
-                <label class="control-label col-sm-2" for="project">Project:</label>
-                <div class="col-sm-6">
-                    <!--    <input type="text" class="form-control" id="project" placeholder="Enter project" [(ngModel)]="selectedProjName" disabled>-->
-                    <input type="text" class="form-control" id="project" placeholder="Enter project" [(ngModel)]="selectedProjName" disabled> 
-                </div>
-                <div class="col-sm-4">
-                  <button class="btn btn-primary" (click)="openModal(projModal,1)" [disabled]="updateDisabled">Search</button>
-                </div>
-            </div><br>
-            <div class="row col-md-16">
-                <label class="control-label col-sm-2" for="task">Task:</label>
-                <div class="col-sm-10">
-                        <input type="text" class="form-control" id="task"  placeholder="Enter task" [(ngModel)]="taskToAdd.Task_Name">
-                </div>
-            </div>
-            <div class="row col-md-16">
-            
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"  [(ngModel)]="isParentTask" (ngModelChange)="isParTaskChange($event)" [disabled]="updateDisabled" > Parent Task
-                      </label>
-                    </div>
-                  
-             </div>
-             <div class="row col-md-16" [class.required]="!isParentTask">
-                  <label class="control-label col-sm-2" for="priority" style="padding-top:20px">Priority:</label>
-                <div class="col-sm-10">
-                  <ng5-slider [(value)]="taskToAdd.Priority" [options]="{
+
+
+  <div class="row col-md-20 form-group">
+
+    <div class="container col col-md-16">
+      <div class="row col-md-16">
+        <label class="control-label col-sm-2" for="project">Project:</label>
+        <div class="col-sm-6">
+          <!--    <input type="text" class="form-control" id="project" placeholder="Enter project" [(ngModel)]="selectedProjName" disabled>-->
+          <input type="text" class="form-control" id="project" placeholder="Enter project"
+            [(ngModel)]="selectedProjName" disabled>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn border btn-basic" style="border-radius: 50%" (click)="openModal(projModal,1)" [disabled]="updateDisabled">Search</button>
+        </div>
+      </div><br>
+      <div class="row col-md-16">
+        <label class="control-label col-sm-2" for="task">Task:</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="task" placeholder="Enter task" [(ngModel)]="taskToAdd.Task_Name">
+        </div>
+      </div>
+      <div class="row col-md-16">
+
+        <div class="checkbox">
+          <label>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" [(ngModel)]="isParentTask" (ngModelChange)="isParTaskChange($event)"
+              [disabled]="updateDisabled"> Parent Task
+          </label>
+        </div>
+
+      </div>
+      <div class="row col-md-16" [class.required]="!isParentTask">
+        <label class="control-label col-sm-2" for="priority" style="padding-top:20px">Priority:</label>
+        <div class="col-sm-8">
+          <ng5-slider [(value)]="taskToAdd.Priority" [options]="{
                     floor: 0,
                     ceil: 30,
                     disabled:isParentTask,
                     step: 1
                   }"></ng5-slider>
-                </div>
-              </div>
-              <div class="row col-md-16">
-                <label class="control-label col-sm-2" for="parent">Parent Task:</label>
-                <div class="col-sm-6">
-                    
-                    <input type="text" class="form-control" id="parent" placeholder="Enter Parent Task" [(ngModel)]="selectedParentTask" 
-                    (ngModelChange)="hasParTaskChange($event)" disabled> 
-                </div>
-                <div class="col-sm-4">
-                  <button class="btn btn-primary" (click)="openModal(parentModal,2)" [disabled]="updateDisabled">Search</button>
-                </div>
-              </div>
-              <div class="row col-md-16">
-                <label class="control-label col-sm-2" for="parent">Start Date:</label>&nbsp;&nbsp;&nbsp;
-                  <input class="col-sm-3" placeholder="yyyy-mm-dd"
-                        name="dp" [(ngModel)]="startDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
-                <label class="control-label col-sm-2" for="parent">End Date:</label>  
-                              
-                <input class="col-sm-3" placeholder="yyyy-mm-dd"
-                        name="dp" [(ngModel)]="endDate" ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()">
-                               
-              </div>
+        </div>
+      </div><br>
+      <div class="row col-md-16">
+        <label class="control-label col-sm-2" for="parent">Parent Task:</label>
+        <div class="col-sm-6">
 
-              <div class="row col-md-16">
-                <label class="control-label col-sm-2" for="user">User:</label>
-                <div class="col-sm-6">
-                    
-                    <input type="text" class="form-control" id="user" placeholder="Enter User" [(ngModel)]="selectedUserName" disabled> 
-                </div>
-                <div class="col-sm-4">
-                  <button class="btn btn-primary" (click)="openModal(userModal,3)" [disabled]="updateDisabled">Search</button>
-                </div>
-              </div><br>
-             <div class="row col-sm-12 text-right float-right">
-                    <button class="col col-md-3" type="submit" (click)="addTask()">Add Task</button>&nbsp;
-                    <button class="col col-md-3" type="submit">Reset</button>&nbsp;
-              </div>
-          </div>
-          
-      </div>   
-    
+          <input type="text" class="form-control" id="parent" placeholder="Enter Parent Task"
+            [(ngModel)]="selectedParentTask" (ngModelChange)="hasParTaskChange($event)" disabled>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn border btn-basic" style="border-radius: 50%" (click)="openModal(parentModal,2)" [disabled]="isParentTask">Search</button>
+        </div>
+      </div><br>
+      <div class="row col-md-16">
+        <label class="control-label col-sm-2" for="parent">Start Date:</label>&nbsp;&nbsp;&nbsp;
+        <input class="col-sm-3" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="startDate" ngbDatepicker [disabled]="isParentTask"
+          #d="ngbDatepicker" (click)="d.toggle()">
+        <label class="control-label col-sm-2" for="parent">End Date:</label>
+
+        <input class="col-sm-3" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="endDate" ngbDatepicker  [disabled]="isParentTask"
+          #d1="ngbDatepicker" (click)="d1.toggle()">
+
+      </div><br>
+
+      <div class="row col-md-16">
+        <label class="control-label col-sm-2" for="user">User:</label>
+        <div class="col-sm-6">
+
+          <input type="text" class="form-control" id="user" placeholder="Enter User" [(ngModel)]="selectedUserName"
+            disabled>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn border btn-basic" style="border-radius: 50%" (click)="openModal(userModal,3)" [disabled]="isParentTask">Search</button>
+        </div>
+      </div><br>
+      <div class="row col-sm-12 text-right float-right">
+        <div class="col-sm-2"></div>
+        <button class="col col-md-3 btn-basic" type="submit" (click)="addTask()">Add Task</button>&nbsp;
+        <button class="col col-md-3 btn-basic" type="submit" (click)="resetTask()">Reset</button>&nbsp;
+      </div>
+    </div>
+
+  </div>
+
 </div>
 <ng-template #projModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Search Project</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="row" style="margin-bottom:15px">
-        <div class="col-sm-12">
-          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (ngModelChange)="searchProject($event.target.value)">
-        </div>
-      </div>
-      <div class="list-group scrollbar">
-        <a class="list-group-item"  *ngFor="let proj of projects" 
-        [class.active]="proj===selectedProj"
-          (click)="setIndexProj(proj)">{{proj.Project_Name}}</a>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Search Project</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" style="margin-bottom:15px">
+      <div class="col-sm-12">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="searchProject($event.target.value)">
       </div>
     </div>
-    <div class="modal-footer text-right">
-      <button class="btn btn-primary" (click)="selectProj()">Ok</button>
-      <button class="btn btn-default" (click)="cancelProj()">Cancel</button>
+    <div class="list-group scrollbar">
+      <a class="list-group-item" *ngFor="let proj of projects" [class.active]="proj===selectedProj"
+        (click)="setIndexProj(proj)">{{proj.Project_Name}}</a>
     </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer text-right">
+    <button class="btn btn-primary" (click)="selectProj()">Ok</button>
+    <button class="btn btn-default" (click)="cancelProj()">Cancel</button>
+  </div>
+</ng-template>
 
 
-  <ng-template #parentModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Search Parent Task</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="row" style="margin-bottom:15px">
-        <div class="col-sm-12">
-          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (ngModelChange)="searchParent($event.target.value)">
-        </div>
-      </div>
-      <div class="list-group scrollbar">
-        <a class="list-group-item"  *ngFor="let par of parents" 
-        [class.active]="par===selectedPar"
-          (click)="setIndexParent(par)">{{par.Parent_Task}}</a>
+<ng-template #parentModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Search Parent Task</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" style="margin-bottom:15px">
+      <div class="col-sm-12">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="searchParent($event.target.value)">
       </div>
     </div>
-    <div class="modal-footer text-right">
-      <button class="btn btn-primary" (click)="selectParent()">Ok</button>
-      <button class="btn btn-default" (click)="cancelParent()">Cancel</button>
+    <div class="list-group scrollbar">
+      <a class="list-group-item" *ngFor="let par of parents" [class.active]="par===selectedPar"
+        (click)="setIndexParent(par)">{{par.Parent_Task}}</a>
     </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer text-right">
+    <button class="btn btn-primary" (click)="selectParent()">Ok</button>
+    <button class="btn btn-default" (click)="cancelParent()">Cancel</button>
+  </div>
+</ng-template>
 
 
-  <ng-template #userModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Search User</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="row" style="margin-bottom:15px">
-        <div class="col-sm-12">
-          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (ngModelChange)="searchUser($event.target.value)">
-        </div>
-      </div>
-      <div class="list-group scrollbar">
-        <a class="list-group-item"  *ngFor="let usr of users" 
-        [class.active]="usr===selectedUsr"
-          (click)="setIndexUser(usr)">{{usr.First_Name + ' ' + usr.Last_Name}}</a>
+<ng-template #userModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Search User</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" style="margin-bottom:15px">
+      <div class="col-sm-12">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="searchUser($event.target.value)">
       </div>
     </div>
-    <div class="modal-footer text-right">
-      <button class="btn btn-primary" (click)="selectUser()">Ok</button>
-      <button class="btn btn-default" (click)="cancelUser()">Cancel</button>
+    <div class="list-group scrollbar">
+      <a class="list-group-item" *ngFor="let usr of users" [class.active]="usr===selectedUsr"
+        (click)="setIndexUser(usr)">{{usr.First_Name + ' ' + usr.Last_Name}}</a>
     </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer text-right">
+    <button class="btn btn-primary" (click)="selectUser()">Ok</button>
+    <button class="btn btn-default" (click)="cancelUser()">Cancel</button>
+  </div>
+</ng-template>

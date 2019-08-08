@@ -1,153 +1,156 @@
 <div class=" container col-md-10">
-        <div class="container col-md-14">
-        
-            <div class="form-group row col-md-14">
-                <div class="col col-md-2">
-                    <label for="firstname">Project:
-                        <label class="red-text">*</label>
-                    </label>
-                </div> 
-                <div class="col col-md-5 float-left">
-                        <input type="text" class="form-control" id="projectName"  [(ngModel)]="projectToAdd.Project_Name" placeholder="Enter the Project Name">
-                </div>       
-            </div>
-            <div class="form-group inline row col-md-14">
-                <div class="col col-md-2"></div>
-                <div class="col col-md-10">
-                    <div class="row">
-                        <div class="orm-group">
-                            <input type="checkbox" [(ngModel)]="isStartEndDate" (ngModelChange)="setStartEndDateChange($event)">&nbsp;
-                            <small>Set Start and End Date</small>&nbsp;
-                        
-                          
-                            <label  >Start Date:</label>
-                              <input  style="width: 120px;" placeholder="yyyy-mm-dd" [disabled]="!isStartEndDate"
-                                    name="dp" [(ngModel)]="startDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">&nbsp;
-                            <label  >End Date:</label>  
-                                          
-                            <input  style="width: 120px;" placeholder="yyyy-mm-dd" [disabled]="!isStartEndDate"
-                                    name="dp" [(ngModel)]="endDate" ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()"
-                                    >
-                                   
-                                
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row col-md-14">
-              <label class="control-label col-sm-2" for="priority" style="padding-top:20px">Priority:</label>
-              <div class="col-sm-6">
-                <ng5-slider [(value)]="projectToAdd.Priority" [options]="{
+  <div class="container col-md-14">
+
+    <div class="form-group row col-md-14">
+      <div class="col col-md-2">
+        <label for="firstname">Project:
+          <label class="red-text">*</label>
+        </label>
+      </div>
+      <div class="col col-md-5 float-left">
+        <input type="text" class="form-control" id="projectName" [(ngModel)]="projectToAdd.Project_Name"
+          placeholder="Enter the Project Name">
+      </div>
+    </div>
+    <div class="form-group inline row col-md-14">
+      <div class="col col-md-2"></div>
+      <div class="col col-md-10">
+        <div class="row">
+          <div class="orm-group">
+            <input type="checkbox" [(ngModel)]="isStartEndDate" (ngModelChange)="setStartEndDateChange($event)">&nbsp;
+            <small>Set Start and End Date</small>&nbsp;
+
+
+            <label>Start Date:</label>
+            <input style="width: 120px;" placeholder="yyyy-mm-dd" [disabled]="!isStartEndDate" name="dp"
+              [(ngModel)]="startDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">&nbsp;
+            <label>End Date:</label>
+
+            <input style="width: 120px;" placeholder="yyyy-mm-dd" [disabled]="!isStartEndDate" name="dp"
+              [(ngModel)]="endDate" ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()">
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row col-md-14">
+      <label class="control-label col-sm-2" for="priority" style="padding-top:20px">Priority:</label>
+      <div class="col-sm-6">
+        <ng5-slider [(value)]="projectToAdd.Priority" [options]="{
                 floor: 0,
                 ceil: 30,
                 disabled:isParentTask,
                 step: 1
                 }"></ng5-slider>
-              </div>
-            </div>
-            <div class="form-group row col-md-16">
-                <div class="col col-md-2">
-                      <label>Manager</label>
-                </div>
-                <div class="col col-md-5 float-right">
-                      <input type="text" class="form-control" id="manager" name='manager' aria-describedby='manager' [(ngModel)]="selectedUserName" readonly>
-                </div>
-                <div class="col col-md-2">
-                      <button type="button" class="btn btn-default border" (click)="openModal(userModal,1)" style="border-radius: 50%">Search</button>
-                </div>
-            </div> 
-            <div class="form-group row col-md-10 float-right">
-                
-                    <button class="col col-md-2" type="submit" (click)="addUpdateProject()">{{EditOrAdd}}</button>&nbsp;
-                    <button class="col col-md-2" type="button" (click)="resetForm()">Reset</button>
-                
-                  
-            </div>
-            <br>
-        <hr style="border-style: solid"> 
-        <div class="container col-md-16">
-        <div class="row col-md-16 ">
-            <div class="col col-md-8 float-right">
-                <input type="text" style="width: 100%"  class="form-control" placeholder="Search..." name="search" (input)="searchProject($event.target.value)"><br>
-            </div>
+      </div>
+    </div>
+    <div class="form-group row col-md-16">
+      <div class="col col-md-2">
+        <label>Manager</label>
+      </div>
+      <div class="col col-md-5 float-right">
+        <input type="text" class="form-control" id="manager" name='manager' aria-describedby='manager'
+          [(ngModel)]="selectedUserName" readonly>
+      </div>
+      <div class="col col-md-2">
+        <button type="button" class="btn border btn-basic" (click)="openModal(userModal,1)"
+          style="border-radius: 50%">Search</button>
+      </div>
+    </div>
+    <div class="form-group row col-md-10 float-right">
+
+      <button class="col col-md-2 btn-basic" type="submit" (click)="addUpdateProject()">{{EditOrAdd}}</button>&nbsp;
+      <button class="col col-md-2 btn-basic" type="button" (click)="resetForm()">Reset</button>
+
+
+    </div>
+    <br>
+    <hr style="border-style: solid">
+    <div class="container col-md-16">
+      <div class="row col-md-16 ">
+        <div class="col col-md-8 float-right">
+          <input type="text" style="width: 100%" class="form-control" placeholder="Search..." name="search"
+            (input)="searchProject($event.target.value)"><br>
         </div>
-        
-                <div class="row col-md-16">
-                  
-                  <div class="col col-md-2 float-right">
-                    <label>Sort By:</label>
-                  </div>
-                  <div class="col col-md-10">
-                    <button type="button"  (click)="sortProject('Start_Date')">Start Date</button> &nbsp;
-                    <button type="button"  (click)="sortProject('End_Date')">End Date</button> &nbsp;
-                    <button type="button" (click)="sortProject('Priority')">Priority</button>&nbsp;
-                    <button type="button" (click)="sortProject('Completed')">Completed</button>
-                  </div>
-                </div>
-            
-                <br/>
-                <hr>
+      </div>
+
+      <div class="row col-md-16">
+
+        <div class="col col-md-2 float-right">
+          <label>Sort By:</label>
         </div>
-        
-    </div> 
-    <div class="list-group" *ngFor="let project of projectService.projects">
-            <div>
-              <div class="row form-group">
-                <div class="col-md-8">
-                  <table style="background-color:#f2f2f2 ; width: 100%" cellpadding=2>
-                    <tr>
-                      <td id="dispProject">
-                        Project: <b>{{project.Project_Name}}</b>
-                      </td>
-                    </tr>
-                    
-                    <tr>
-                      <td >No of Tasks: {{project.TotalTasks}}</td>
-                      <td>Completed: {{project.CompletedTasks}}</td>
-                    </tr>
-                    <tr>
-                      <td id="dispstartdate">Start Date: {{project.Start_Date| date: 'dd-MM-yyyy'}}</td>
-                      <td id="dispenddate">End Date: {{project.End_Date| date: 'dd-MM-yyyy'}}</td>
-                    </tr>
-                  </table>
+        <div class="col col-md-10">
+          <button type="button" class="col col-md-2 btn-basic" (click)="sortProject('Start_Date')">Start Date</button> &nbsp;
+          <button type="button" class="col col-md-2 btn-basic" (click)="sortProject('End_Date')">End Date</button> &nbsp;
+          <button type="button" class="col col-md-2 btn-basic" (click)="sortProject('Priority')">Priority</button>&nbsp;
+          <button type="button" class="col col-md-2 btn-basic" (click)="sortProject('Completed')">Completed</button>
+        </div>
+      </div>
+
+      <br />
+      <hr>
+    </div>
+
+  </div>
+  <div class="list-group" *ngFor="let project of projectService.projects">
+    <div>
+      <div class="row form-group">
+        <div class="col-md-8">
+          <table style="background-color:#f2f2f2 ; width: 100%" cellpadding=2>
+            <tr>
+              <td id="dispProject">
+                Project: <b>{{project.Project_Name}}</b>
+              </td>
+            </tr>
+
+            <tr>
+              <td>No of Tasks: {{project.TotalTasks}}</td>
+              <td>Completed: {{project.CompletedTasks}}</td>
+            </tr>
+            <tr>
+              <td id="dispstartdate">Start Date: {{project.Start_Date| date: 'dd-MM-yyyy'}}</td>
+              <td id="dispenddate">End Date: {{project.End_Date| date: 'dd-MM-yyyy'}}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col-md-1">
+          <table height="100%" cellpadding=0>
+            <tr height="20%">
+              <td>
+                <label>Priority</label>
+              </td>
+            </tr>
+            <tr height="80%" style="background-color:#f2f2f2">
+              <td>
+                <div>
+                  <span id="disppriority">{{project.Priority}}</span>
                 </div>
-      
-                <div class="col-md-1">
-                  <table height="100%" cellpadding=0>
-                    <tr height="20%">
-                      <td>
-                        <label>Priority</label>
-                      </td>
-                    </tr>
-                    <tr height="80%" style="background-color:#f2f2f2">
-                      <td>
-                        <div>
-                          <span id="disppriority">{{project.Priority}}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-      
-                <div class="col-md-2 ml-3">
-                  <table cellpadding=5>
-                    <tr>
-                      <td>
-                        <button type="button" style="width :75px" (click)="editProject(project)">Update</button> &nbsp;
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <button type="button" style="width :75px" (click)="suspendProject(project)">Suspend</button>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                
-              </div>
-              <hr>
-            </div>   
-        </div>   
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col-md-2 ml-3">
+          <table cellpadding=5>
+            <tr>
+              <td>
+                <button type="button" class="btn-basic" style="width :75px" (click)="editProject(project)">Update</button> &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button type="button" class="btn-basic" style="width :75px" (click)="suspendProject(project)">Suspend</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <hr>
+    </div>
+  </div>
 </div>
 
 <ng-template #userModal>
@@ -160,17 +163,17 @@
   <div class="modal-body">
     <div class="row" style="margin-bottom:15px">
       <div class="col-sm-12">
-        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (ngModelChange)="searchUser($event.target.value)">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="searchUser($event.target.value)">
       </div>
     </div>
     <div class="list-group scrollbar">
-      <a class="list-group-item"  *ngFor="let usr of users" 
-      [class.active]="usr===selectedUsr"
+      <a class="list-group-item" *ngFor="let usr of users" [class.active]="usr===selectedUsr"
         (click)="setIndexUser(usr)">{{usr.First_Name + ' ' + usr.Last_Name}}</a>
     </div>
   </div>
   <div class="modal-footer text-right">
-    <button class="btn btn-primary" (click)="selectUser()">Ok</button>
-    <button class="btn btn-default" (click)="cancelUser()">Cancel</button>
+    <button class="col col-md-2 btn-basic" (click)="selectUser()">Ok</button>
+    <button class="col col-md-2 btn-basic" (click)="cancelUser()">Cancel</button>
   </div>
 </ng-template>

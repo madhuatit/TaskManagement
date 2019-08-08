@@ -16,7 +16,8 @@ router.get('/', (req, res) => {
             if(!err){
                 res.send(docs);
             }else{
-                console.log('error while searching' + JSON.stringify(err, undefined, 2))
+                console.log('error while searching' + JSON.stringify(err, undefined, 2));
+                res.status(400).send({"Message": "Project Search Failed"});
             }
         });
 
@@ -120,8 +121,10 @@ router.delete('/:Project_Id', (req, res) => {
             if(!err){
                 console.log('inside delete');
                 res.send(docs);
+                //res.status(400).send({"Message": "Project Search Failed"});
             }else{
                 console.log('Error in User Delete: ' + JSON.stringify(err, undefined, 2));
+                res.status(400).send({"Message": "Project Search Failed"});
             }
         })
    // }

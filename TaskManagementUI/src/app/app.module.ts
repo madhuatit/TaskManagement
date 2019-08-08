@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +8,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { BsDatepickerModule, ModalModule } from 'ngx-bootstrap';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { Ng5SliderModule } from 'ng5-slider';
+import { ToastrModule } from 'ngx-toastr';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -37,7 +39,13 @@ import { AddTaskService } from './shared/add-task.service';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    Ng5SliderModule
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true
+    }),
+    Ng5SliderModule,
+    BrowserAnimationsModule
     
   ],
   providers: [ProjectService, UserService, AddTaskService],

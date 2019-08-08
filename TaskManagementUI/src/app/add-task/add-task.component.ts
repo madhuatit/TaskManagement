@@ -1,14 +1,14 @@
-import { Component, OnInit, TemplateRef  } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { AddTaskService} from '../shared/add-task.service';
-import { ProjectService} from '../shared/project.service';
+import { AddTaskService } from '../shared/add-task.service';
+import { ProjectService } from '../shared/project.service';
 import { UserService } from '../shared/user.service';
-import { AddTask, ParentTask} from '../shared/add-task.model';
-import { NgForm } from '@angular/forms';
+import { AddTask, ParentTask } from '../shared/add-task.model';
 import { Project } from '../shared/project.model';
 import { User } from '../shared/user.model';
+import { ToastrService } from 'ngx-toastr';
 
 import * as moment from 'moment';
 
@@ -19,6 +19,7 @@ import * as moment from 'moment';
   styleUrls: ['./add-task.component.css'],
   providers: [AddTaskService]
 })
+
 export class AddTaskComponent implements OnInit {
 
   modalRef: BsModalRef;
@@ -27,186 +28,244 @@ export class AddTaskComponent implements OnInit {
   users: Array<User>;
   selectedProjId: number;
   selectedProjName: string;
-  selectedProj :Project;
+  selectedProj: Project;
   searchText: string;
   selectedParentTask: string;
   selectedPar: ParentTask;
-  showProj : boolean;
+  showProj: boolean;
   showPar: boolean;
   showUsr: boolean;
   selectedUserName: string;
   selectedUsr: User;
-  taskToAdd : AddTask;
-  isParentTask : boolean;
+  taskToAdd: AddTask;
+  isParentTask: boolean;
   startDate: Date;
   endDate: Date;
-  
 
-  constructor(private projectService: ProjectService, private addTaskService: AddTaskService, 
-    private modalService: BsModalService, private route: ActivatedRoute, 
-    private userService: UserService) { 
+
+  constructor(private projectService: ProjectService, private addTaskService: AddTaskService,
+    private modalService: BsModalService, private route: ActivatedRoute,
+    private userService: UserService, private toastr: ToastrService) {
     this.taskToAdd = new AddTask();
     this.isParentTask = false;
-    
   }
 
   ngOnInit() {
-    //this.activeModal.close(ProjectSearchComponent);
+    this.taskToAdd.Priotity = 0;
   }
-  addTask(){
-    if(this.isParentTask){
+
+  //reset the form
+  resetTask() {
+    this.taskToAdd = new AddTask();
+    this.selectedProjName = null;
+    this.isParentTask = false;
+    this.startDate = null;
+    this.endDate = null;
+    this.selectedUserName = null;
+    this.selectedParentTask = null;
+    this.taskToAdd.Priotity = 0;
+  }
+
+  //adding a new task/Parent task.
+  addTask() {
+    if (!this.selectedProjName) {
+      this.toastr.warning('Kindly select a project');
+      return;
+    }
+
+    if (!this.taskToAdd.Task_Name) {
+      this.toastr.warning('Kindly enter the Task Name');
+      return;
+    }
+
+    if (!this.isParentTask) {
+      if (!this.selectedParentTask) {
+        this.toastr.warning('Kindly select the Parent Task');
+        return;
+      }
+
+      if ((!this.startDate) || (!this.endDate)) {
+        this.toastr.warning('Kindly select the StartDate & EndDate');
+        return;
+      }
+
+      var strDt = moment(this.startDate).add(-1, 'months').toDate();
+      var endDt = moment(this.endDate).add(-1, 'months').toDate();
+
+      if (strDt > endDt) {
+        this.toastr.warning('StartDate should be less than EndDate');
+        return;
+      }
+
+      if (!this.selectedUserName) {
+        this.toastr.warning('Kindly select the User');
+        return;
+      }
+
+    }
+
+    if (this.isParentTask) {
       console.log(this.taskToAdd.Task_Name);
       const newParent = <ParentTask>{
-        Parent_Task  : this.taskToAdd.Task_Name,
-        Project_Id   : this.taskToAdd.Project.Project_Id
+        Parent_Task: this.taskToAdd.Task_Name,
+        Project_Id: this.taskToAdd.Project.Project_Id
       };
       this.addTaskService.postParentTask(newParent).subscribe((res) => {
-        console.log('add parent');
+        this.toastr.success('Parent Task Added successfully');
       });
-    }else{
-      console.log(this.isParentTask);
-      console.log('Dates: ' + this.startDate.toString);
+      return;
+    } else {
+
       this.taskToAdd.Start_Date = moment(this.startDate).add(-1, 'months').toDate();
       this.taskToAdd.End_Date = moment(this.endDate).add(-1, 'months').toDate();
       this.addTaskService.postNewTask(this.taskToAdd).subscribe((res) => {
-        console.log('add Task completed');
+        this.toastr.success('Task Added successfully');
       });
+      return;
     }
   }
 
-  isParTaskChange($event){
-    console.log('parent task changed to '+ this.isParentTask);
+  //if parent task checkbox selected.
+  isParTaskChange($event) {
+
   }
 
+  //search model of Users, Projects, Parenttasks.
   openModal(template: TemplateRef<any>, type: number) {
-    
+
     if (type === 1) {
-            
+
       this.projectService.getProjectList().subscribe((res) => {
         console.log(res);
         this.projects = res as Project[];
         this.modalRef = this.modalService.show(template);
-        
+
       },
         (error) => {
           console.log(error);
         });
 
-    }else if(type == 2){
+    } else if (type == 2) {
 
       this.addTaskService.getParentList().subscribe((res) => {
         this.parents = res as ParentTask[];
         this.modalRef = this.modalService.show(template);
       });
-    }else if(type == 3){
+    } else if (type == 3) {
 
       this.userService.getUserList().subscribe((res) => {
         this.users = res as User[];
         this.modalRef = this.modalService.show(template);
       });
     }
-    
+
   }
 
-  searchUser(searchKey: string){
+  //searching the list of users.
+  searchUser(searchKey: string) {
 
-    this.userService.getSearchUserList(searchKey).subscribe((res) =>{
+    this.userService.getSearchUserList(searchKey).subscribe((res) => {
       this.users = res as User[];
     })
   }
 
+  //setting user object.
   setIndexUser(usr: User) {
     this.selectedUsr = usr;
     this.searchText = usr.First_Name + ' ' + usr.Last_Name;
     this.showPar = false;
   }
 
-  cancelUser(){
+  //cancel the user model
+  cancelUser() {
     this.modalRef.hide();
-    this.selectedUsr=null;
-    
+    this.selectedUsr = null;
+
   }
 
+  //select a user object.
   selectUser() {
-    if(this.selectedUsr != null)
-    {
+    if (this.selectedUsr != null) {
       console.log(this.selectedUsr.User_Id);
-    this.taskToAdd.User = this.selectedUsr;
-      
-    this.selectedUserName = this.selectedUsr.First_Name + ' ' + this.selectedUsr.Last_Name;
-    this.selectedUsr = null;
-    this.searchText ='';
-    this.modalRef.hide();
+      this.taskToAdd.User = this.selectedUsr;
+
+      this.selectedUserName = this.selectedUsr.First_Name + ' ' + this.selectedUsr.Last_Name;
+      this.selectedUsr = null;
+      this.searchText = '';
+      this.modalRef.hide();
     }
   }
 
-  searchParent(searchKey: string){
+  //searching the parent tasks.
+  searchParent(searchKey: string) {
 
-    this.addTaskService.getSearchParentList(searchKey).subscribe((res) =>{
+    this.addTaskService.getSearchParentList(searchKey).subscribe((res) => {
       this.parents = res as ParentTask[];
     })
   }
 
+  //setting the parent task object.
   setIndexParent(par: ParentTask) {
     this.selectedPar = par;
     this.searchText = par.Parent_Task;
     this.showPar = false;
   }
 
-  cancelParent(){
+  //cancel the parent model.
+  cancelParent() {
     this.modalRef.hide();
-    this.selectedPar=null;
-    
+    this.selectedPar = null;
+
   }
 
+  //selecting the parent object.
   selectParent() {
-    if(this.selectedPar != null)
-    {
+    if (this.selectedPar != null) {
       console.log(this.selectedPar.Parent_Id);
-    this.taskToAdd.Parent = this.selectedPar;
-      
-    this.selectedParentTask = this.selectedPar.Parent_Task;
-    this.selectedPar = null;
-    this.searchText ='';
-    this.modalRef.hide();
+      this.taskToAdd.Parent = this.selectedPar;
+
+      this.selectedParentTask = this.selectedPar.Parent_Task;
+      this.selectedPar = null;
+      this.searchText = '';
+      this.modalRef.hide();
     }
   }
 
-  searchProject(searchKey: string){
+  //searching the projects.
+  searchProject(searchKey: string) {
     console.log('search value: ' + searchKey);
-    
-    this.projectService.getSearchProjectList(searchKey).subscribe((res) =>{
-      
+
+    this.projectService.getSearchProjectList(searchKey).subscribe((res) => {
+
       this.projects = res as Project[];
-      
+
     });
   }
 
-  cancelProj(){
+  //cancel the project model.
+  cancelProj() {
     this.modalRef.hide();
-    this.selectedProj=null;
-    
+    this.selectedProj = null;
+
   }
 
+  //selecting the project object.
   selectProj() {
-    if(this.selectedProj != null)
-    {
+    if (this.selectedProj != null) {
       console.log(this.selectedProj.Project_Id);
-    this.taskToAdd.Project = this.selectedProj;
-      
-    this.selectedProjName = this.selectedProj.Project_Name;
-    this.selectedProj = null;
-    this.searchText ='';
-    this.modalRef.hide();
+      this.taskToAdd.Project = this.selectedProj;
+
+      this.selectedProjName = this.selectedProj.Project_Name;
+      this.selectedProj = null;
+      this.searchText = '';
+      this.modalRef.hide();
     }
   }
 
+  //setting the project object.
   setIndexProj(proj: Project) {
     this.selectedProj = proj;
     this.searchText = proj.Project_Name;
     this.showProj = false;
   }
-
-  
-
 }
