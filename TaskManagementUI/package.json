@@ -1,5 +1,5 @@
 {
-  "name": "my-first",
+  "name": "taskmanagementui",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -25,6 +25,7 @@
     "@ngrx/store": "^8.1.0",
     "angular-moment": "^1.3.0",
     "bootstrap": "^4.3.1",
+    "istanbul": "^0.4.5",
     "moment": "^2.24.0",
     "ng5-slider": "^1.2.4",
     "ngx-bootstrap": "^5.1.0",

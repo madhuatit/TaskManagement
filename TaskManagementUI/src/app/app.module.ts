@@ -18,7 +18,6 @@ import { ViewTaskComponent } from './view-task/view-task.component';
 import { UserComponent } from './user/user.component';
 import { ProjectComponent } from './project/project.component';
 import { AddTaskComponent } from './add-task/add-task.component';
-import { ProjectSearchComponent } from './project/project-search/project-search.component';
 import { ProjectService } from './shared/project.service';
 import { UserService } from './shared/user.service';
 import { AddTaskService } from './shared/add-task.service';
@@ -29,8 +28,7 @@ import { AddTaskService } from './shared/add-task.service';
     ViewTaskComponent,
     UserComponent,
     ProjectComponent,
-    AddTaskComponent,
-    ProjectSearchComponent
+    AddTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +47,6 @@ import { AddTaskService } from './shared/add-task.service';
     
   ],
   providers: [ProjectService, UserService, AddTaskService],
-  bootstrap: [AppComponent],
-  entryComponents: [ProjectSearchComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

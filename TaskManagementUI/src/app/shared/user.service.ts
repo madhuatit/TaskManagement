@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Response } from './response.model';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -20,42 +21,42 @@ export class UserService {
   //retrieve all the users.
   getUserList() {
     console.log('getUserList called');
-    return this.http.get(this.baseURL);
+    return this.http.get<Response<User[]>>(this.baseURL);
   }
 
   //add a new user.
   postUser(usr: User) {
     console.log(usr);
-    return this.http.post(this.baseURL, usr);
+    return this.http.post<Response<User>>(this.baseURL, usr);
   }
 
   //update the existing user.
   putUser(usr: User) {
     console.log('in user service : ' + usr.User_Id);
-    return this.http.put(this.baseURL + '/' + usr.User_Id, usr);
+    return this.http.put<Response<User>>(this.baseURL + '/' + usr.User_Id, usr);
   }
 
   //search for users.
   getSearchUserList(searchKey: string) {
     let params = new HttpParams().set("searchKey", searchKey);
     //params.append('searchKey', searchKey);
-    return this.http.get(this.baseURL, { params: params });
+    return this.http.get<Response<User[]>>(this.baseURL, { params: params });
   }
 
   //sort the user list based on column key.
   getSortUserList(sortKey: string) {
     let params = new HttpParams().set("sortKey", sortKey);
-    return this.http.get(this.baseURL, { params: params });
+    return this.http.get<Response<User[]>>(this.baseURL, { params: params });
   }
 
   //get the specific user details.
   getUserForId(id: any) {
     let parms = new HttpParams().set("_id", id);
-    return this.http.get(this.baseURL, { params: parms });
+    return this.http.get<Response<User>>(this.baseURL, { params: parms });
   }
 
   //delete the user data.
   removeUser(usr: User) {
-    return this.http.delete(this.baseURL + '/' + usr.Employee_Id);
+    return this.http.delete<Response<User>>(this.baseURL + '/' + usr.Employee_Id);
   }
 }

@@ -53,7 +53,7 @@ export class ProjectComponent implements OnInit {
   openModal(template: TemplateRef<any>, type: number) {    
     if (type === 1) {            
       this.userService.getUserList().subscribe((res) => {
-        this.users = res as User[];
+        this.users = res.Data as User[];
         this.modalRef = this.modelService.show(template);        
       },
         (error) => {
@@ -168,7 +168,7 @@ export class ProjectComponent implements OnInit {
     this.EditOrAdd = "Update";
     this.projectToAdd = project;
     this.userService.getUserList().subscribe((res)=>{
-      this.users = res as User[];
+      this.users = res.Data as User[];
       this.selectedUserName = this.users.find(
         x=> x._id === project.User.toString()).First_Name;        
     });

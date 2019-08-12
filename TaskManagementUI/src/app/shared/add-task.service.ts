@@ -34,4 +34,10 @@ export class AddTaskService {
   postNewTask(addTask: AddTask) {
     return this.http.post(this.baseURL + 'task', addTask);
   }
+
+   //get the specific parent details.
+   getParentForId(id: any) {
+    let parms = new HttpParams().set("_id", id);
+    return this.http.get(this.baseURL + 'parent', { params: parms });
+  }
 }

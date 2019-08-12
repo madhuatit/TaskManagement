@@ -30,7 +30,11 @@ export class UserComponent implements OnInit {
   //retrieve all the user details.
   getUserList() {
     this.userService.getUserList().subscribe((res) => {
-      this.userService.users = res as User[];
+      if (res.Success) {
+        this.userService.users = res.Data;
+      } else {
+        this.toastr.error(res.Message);
+      }
     });
   }
 
@@ -68,7 +72,11 @@ export class UserComponent implements OnInit {
     }
     if (!form.value.User_Id) {
       this.userService.postUser(form.value).subscribe((res) => {
-        this.toastr.success('User Added successfully');
+        if(res.Success){
+          this.toastr.success('User Added successfully');
+        }else{
+          this.toastr.error(res.Message);
+        }
       });
       this.resetForm(form);
       this.getUserList();
@@ -77,7 +85,12 @@ export class UserComponent implements OnInit {
     } else {
       
       this.userService.putUser(form.value).subscribe((res) => {
-        this.toastr.success('User details updated successfully');
+        if(res.Success){
+          this.toastr.success('User details updated successfully');
+        }else{
+          this.toastr.error(res.Message);
+        }
+        
       });
       this.resetForm(form);
       this.getUserList();
@@ -95,24 +108,39 @@ export class UserComponent implements OnInit {
   //search users based on input key.
   searchUsers(searchKey: string) {
     this.userService.getSearchUserList(searchKey).subscribe((res) => {
-      if ((res as User[]).length == 0) {
-        this.toastr.warning('No Users found for search criteria');
+      if(res.Success){
+        if ((res.Data as User[]).length == 0) {
+          this.toastr.warning('No Users found for search criteria');
+        }
+        this.userService.users = res.Data as User[];
+      }else{
+        this.toastr.error(res.Message);
       }
-      this.userService.users = res as User[];
+      
     });
   }
 
   //sort user details.
   sortUsers(sortKey: string) {
     this.userService.getSortUserList(sortKey).subscribe((res) => {
-      this.userService.users = res as User[];
+      if(res.Success){
+        this.userService.users = res.Data as User[];
+      }else{
+        this.toastr.error(res.Message);
+      }
+      
     });
   }
 
   //delete existing user.
   deleteUser(usr: User) {
     this.userService.removeUser(usr).subscribe((res) => {
-      this.toastr.success('User deleted Successfully');
+      if(res.Success){
+        this.toastr.success('User deleted Successfully');
+      }else{
+        this.toastr.error(res.Message);
+      }
+      
     });
     this.getUserList();
     this.EditOrAdd = "Add";
