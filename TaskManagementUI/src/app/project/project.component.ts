@@ -36,8 +36,8 @@ export class ProjectComponent implements OnInit {
   userObjId: string;
 
 
-  constructor(private projectService: ProjectService, private modelService: BsModalService,
-    private userService: UserService, private toastr: ToastrService) { 
+  constructor(public projectService: ProjectService, public modelService: BsModalService,
+    public userService: UserService, public toastr: ToastrService) { 
     this.EditOrAdd = "Add";
     this.projectToAdd = new Project();
   }

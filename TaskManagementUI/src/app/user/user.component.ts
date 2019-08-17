@@ -3,6 +3,7 @@ import { UserService } from '../shared/user.service';
 import { User } from '../shared/user.model';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Response} from '../shared/response.model';
 
 @Component({
   selector: 'app-user',
@@ -14,9 +15,9 @@ export class UserComponent implements OnInit {
 
   public EditOrAdd: String;
 
-  constructor(private userService: UserService,
-    private toastr: ToastrService) {
-    this.EditOrAdd = "Add";
+  constructor(public userService: UserService,
+    public toastr: ToastrService) {
+    this.EditOrAdd = "Add";  
 
   }
 
@@ -29,7 +30,9 @@ export class UserComponent implements OnInit {
 
   //retrieve all the user details.
   getUserList() {
-    this.userService.getUserList().subscribe((res) => {
+    
+    this.userService.getUserList().subscribe(res => {
+         
       if (res.Success) {
         this.userService.users = res.Data;
       } else {
@@ -50,24 +53,19 @@ export class UserComponent implements OnInit {
 
   //add or update the user.
   onSubmit(form: NgForm) {
-    /* console.log('Edit saved' + form.value.Employee_Id);
-    this.userService.putUser(form.value).subscribe((res) => {
-      this.resetForm(form);
-      this.getUserList();
-    }); */
-    console.log('User_Id: ' + form.value.Employee_Id);
-    if(!this.userService.selectedUser.First_Name){
-      this.toastr.warning('Enter the User First Name');
+    
+   if(!this.userService.selectedUser.First_Name){
+      this.toastr.error('Enter the User First Name');
       return;
     }
 
     if(!this.userService.selectedUser.Last_Name){
-      this.toastr.warning('Enter the User Last Name');
+      this.toastr.error('Enter the User Last Name');
       return;
     }
 
     if(!this.userService.selectedUser.Employee_Id){
-      this.toastr.warning('Enter the User Employee Id');
+      this.toastr.error('Enter the User Employee Id');
       return;
     }
     if (!form.value.User_Id) {

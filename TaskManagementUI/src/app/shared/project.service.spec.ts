@@ -15,6 +15,7 @@ describe('ProjectService', () => {
   let userpostservice: ProjectService;
   let httpGetSpy: {get: jasmine.Spy};
   let httpPostSpy: {post: jasmine.Spy};
+  let httpPutSpy: {put: jasmine.Spy};
 
 
   beforeEach(() => {TestBed.configureTestingModule({

@@ -18,9 +18,9 @@ import { Router } from '@angular/router';
 })
 export class ViewTaskComponent implements OnInit {
 
-  constructor(private viewTaskService: ViewTaskService, private projectService: ProjectService,
-    private modalService: BsModalService, private route: ActivatedRoute,
-    private toastr: ToastrService, private router: Router,
+  constructor(public viewTaskService: ViewTaskService, public projectService: ProjectService,
+    public modalService: BsModalService, private route: ActivatedRoute,
+    public toastr: ToastrService, private router: Router,
     private addTaskService: AddTaskService) { }
 
   modalRef: BsModalRef;

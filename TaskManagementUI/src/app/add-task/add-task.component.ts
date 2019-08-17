@@ -45,9 +45,9 @@ export class AddTaskComponent implements OnInit {
   buttonName: string;
 
 
-  constructor(private projectService: ProjectService, private addTaskService: AddTaskService,
-    private modalService: BsModalService, private route: ActivatedRoute,
-    private userService: UserService, private toastr: ToastrService) {
+  constructor(public projectService: ProjectService, public addTaskService: AddTaskService,
+    public modalService: BsModalService, private route: ActivatedRoute,
+    public userService: UserService, public toastr: ToastrService) {
     this.taskToAdd = new AddTask();
     this.isParentTask = false;
 

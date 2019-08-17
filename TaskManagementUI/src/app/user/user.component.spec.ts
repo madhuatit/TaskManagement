@@ -1,48 +1,59 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '../shared/user.service';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormBuilder, NgForm } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component, Directive } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable, of } from 'rxjs';
-import { Response } from '../shared/response.model';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Routes, RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import 'rxjs/add/observable/of';
 
 
 import { UserComponent } from './user.component';
 import { ToastrService } from 'ngx-toastr';
-import { User} from '../shared/user.model';
+import { User } from '../shared/user.model';
 
 describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
   let service: UserService;
   let toastr: ToastrService;
-  const USERS : any = 
-    { User_Id: 1,
+  const user: User =
+  {
+    User_Id: 1,
+    First_Name: 'Madhu Ranjan',
+    Last_Name: 'Vannia Rajan',
+    Employee_Id: 12345,
+    Project_Id: 1212,
+    Task_Id: 0,
+    _id: '5d4b781546ec9c1f24548852'
+  };
+
+  const users: User[] =
+    [{
+      User_Id: 1,
       First_Name: 'Madhu Ranjan',
       Last_Name: 'Vannia Rajan',
-      Employee_Id: 12345,        
+      Employee_Id: 12345,
       Project_Id: 1212,
       Task_Id: 0,
-      _id: '5d4b781546ec9c1f24548852'  };
+      _id: '5d4b781546ec9c1f24548852'
+    }];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserComponent ],
-      imports:[ FormsModule, ReactiveFormsModule, HttpClientModule, HttpClientTestingModule, NgbModule ],
+      declarations: [UserComponent],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientModule, HttpClientTestingModule, NgbModule],
       providers: [FormBuilder, UserService,
-        {provide: BsModalService, useValue: {}}, 
-        {provide: ActivatedRoute, useValue: {}},
-        {provide: ToastrService, useValue:{}},
-        {provide: Router, useValue: {}}]
+        { provide: BsModalService, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
+        { provide: ToastrService, useValue: {} },
+        { provide: Router, useValue: {} }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -56,130 +67,107 @@ describe('UserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-   it('call resetUserForm',() => {
-    component.resetForm;
-    expect (component.EditOrAdd).toEqual('Add');
-    
-  })
+  it('call sortUser with success', () => {
 
-  /*it ('retriveUserList component show user details', () => {
-    const user: User[] = [{
-      User_Id: 1,
-      First_Name: 'Abdul',
-      Last_Name: 'Kalam',
-      Employee_Id: 12345,
-      Project_Id: 1,
-      Task_Id:1,
-      _id: 'xcv'
-    }];
-    
-    component.ngOnInit();
+    const res = { Success: true, Data: users }
+    spyOn(component.userService, 'getSortUserList').and.returnValue(Observable.of(res));
+    expect(component.toastr.success);
+    component.userService.users = undefined;
+    component.sortUsers('First_Name');
+    expect(component.userService.users).toBeDefined();
+  });
+
+  it('call sort Users fails', () => {
+
+    const res = { Success: false, Data: null, Message: 'error_msg' };
+    spyOn(component.userService, "getSortUserList").and.returnValue(of(res));
+    expect(component.toastr.error);
+    component.userService.users = undefined;
+    component.sortUsers('First_Name');
+    expect(component.userService.users).not.toBeDefined();
+  });
+
+  it('call search Users success', () => {
+
+    const res = { Success: true, Data: users };
+    spyOn(component.userService, "getSearchUserList").and.returnValue(of(res));
+    expect(component.toastr.success);
+    component.userService.users = undefined;
+    component.searchUsers('Madhu');
+    expect(component.userService.users).toBeDefined();
+  });
+
+  it('call search Users fails', () => {
+
+    const res = { Success: false, Data: null, Message: 'error_msg' };
+    spyOn(component.userService, "getSearchUserList").and.returnValue(of(res));
+    expect(component.toastr.error);
+    component.userService.users = undefined;
+    component.searchUsers('Madhu');
+    expect(component.userService.users).not.toBeDefined();
+  });
+
+  it('call search Users success with zero result', () => {
+
+    const res = { Success: true, Data: [] };
+    spyOn(component.userService, "getSearchUserList").and.returnValue(of(res));
+    expect(component.toastr.warning);
+    component.userService.users = undefined;
+    component.searchUsers('Madhu');
+    expect(component.userService.users).toBeNull;
+  });
+
+  it('call deleteUser success', () => {
+    const res = { Success: true, Data: user };
+    spyOn(component.userService, "removeUser").and.returnValue(of(res));
+    expect(component.toastr.success);
+    component.deleteUser(user);
+  });
+
+  it('call get Users success', () => {
+
+    const res = { Success: true, Data: users };
+    spyOn(component.userService, "getUserList").and.returnValue(of(res));
+    expect(component.toastr.success);
+    component.userService.users = undefined;
     component.getUserList();
-    fixture.detectChanges();
+    expect(component.userService.users).toBeDefined();
+  });
 
-    fixture.whenStable().then( ()=> {
-      const idelement: HTMLInputElement = fixture.debugElement.query(By.css('#employeeId')).nativeElement;
-      const firstnameelement: HTMLInputElement = fixture.debugElement.query(By.css('#firstName')).nativeElement;
-      const lastnameelement: HTMLInputElement = fixture.debugElement.query(By.css('#lastName')).nativeElement;
-            
-      expect(firstnameelement.value).toContain(user[0].First_Name);
-      expect(lastnameelement.value).toContain(user[0].Last_Name);
-    })
-  })
+  it('call get Users fails', () => {
 
-   it('call deleteUser when an User is deleted', () => {
-    const spy = spyOn(service, 'postUser').and.returnValues(Observable.of(USERS));
-    
-    const user: User = {
-      User_Id: 1,
-      First_Name: 'Abdul',
-      Last_Name: 'Kalam',
-      Employee_Id: 12345,
-      Project_Id: 1,
-      Task_Id:1,
-      _id: 'xcv'
-    };
-
-    const User_Id=1;
-    component.deleteUser(user)
-    expect(spy).toHaveBeenCalledWith(user);
-  }); 
-
-  it('call addUser when a new User is added', () => {
-    const spy = spyOn(service, 'postUser').and.returnValues(Observable.of(USERS));
-    
-    component.EditOrAdd = 'Add';
-    expect(spy).toHaveBeenCalled();
+    const res = { Success: false, Data: null, Message: 'Error_msg' };
+    spyOn(component.userService, "getUserList").and.returnValue(of(res));
+    expect(component.toastr.error);
+    component.userService.users = undefined;
     component.getUserList();
+    expect(component.userService.users).toBeNull;
+  });
+
+  it('call editUser success', () => {
+    const res = { Success: true, Data: user };
+    component.editUser(user);
+    expect(component.userService.selectedUser).toBeDefined();
+    expect(component.EditOrAdd).toEqual('Update');
+  });
+
+  it('call resetUserForm', () => {
+
+    var form = new NgForm(null, null);
+    component.resetForm(form);
+    expect(form.reset);
+    expect(component.EditOrAdd).toEqual('Add');
+  });
+
+  /* it('call submit', () => {
+
+    var form = new NgForm(null, null);
+    component.onSubmit(form);
+    expect(!service.selectedUser.First_Name);
+    expect(component.toastr.error);
+    expect(form.reset);
+    expect(component.EditOrAdd).toEqual('Add');
   }); */
 
-  it('call deleteUser when an User is deleted', () => {
-    const user: User = {
-      User_Id: 1,
-      First_Name: 'Madhu Ranjan',
-      Last_Name: 'Vannia Rajan',
-      Employee_Id: 12345,
-      Project_Id: 1,
-      Task_Id:1,
-      _id: 'xcv'
-    };
-
-    component.deleteUser(user);
-    spyOn(service, 'removeUser').and.returnValue(of({Success: true, Data: user}));
-    
-    component.EditOrAdd="Add";
-  });
-
-  it('call deleteUser when an User is deleted', () => {
-    const user: User = {
-      User_Id: 1,
-      First_Name: 'Madhu Ranjan',
-      Last_Name: 'Vannia Rajan',
-      Employee_Id: 12345,
-      Project_Id: 1,
-      Task_Id:1,
-      _id: 'xcv'
-    };
-
-    component.deleteUser(user);
-    spyOn(service, 'removeUser').and.returnValue(of({Success: false, Data: user, Message: ''}));
-    
-    component.EditOrAdd="Add";
-  });
-
-  it('call sortUser when users are sorted', () => {
-    const users: User[] = [{
-      User_Id: 1,
-      First_Name: 'Madhu Ranjan',
-      Last_Name: 'Vannia Rajan',
-      Employee_Id: 12345,
-      Project_Id: 1,
-      Task_Id:1,
-      _id: 'xcv'
-    }];
-
-    component.sortUsers('First_Name');
-    spyOn(service, 'getSortUserList').and.returnValue(of({Success: true, Data: users}));
-    //component.EditOrAdd="Add";
-    expect(component.EditOrAdd).toBe('Add');
-  });
-
-  it('call search Users when users are searched', () => {
-    const users: User[] = [{
-      User_Id: 1,
-      First_Name: 'Madhu Ranjan',
-      Last_Name: 'Vannia Rajan',
-      Employee_Id: 12345,
-      Project_Id: 1,
-      Task_Id:1,
-      _id: 'xcv'
-    }];
-
-    component.searchUsers('First_Name');
-    spyOn(service, 'getSearchUserList').and.returnValue(of({Success: true, Data: users}));
-    expect({Success: true});
-    //component.EditOrAdd="Add";
-    expect(component.EditOrAdd).toBe('Add');
-  });
 
 });
