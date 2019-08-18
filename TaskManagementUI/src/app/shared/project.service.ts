@@ -41,12 +41,12 @@ export class ProjectService {
 
   //update an existing project based on Project Id.
   putProject(project: Project) {
-    return this.http.put(this.baseURL + '/' + project.Project_Id, project);
+    return this.http.post(this.baseURL + '/edit/' + project.Project_Id, project);
   }
 
   //delete an existing project based on project Id.
   removeProject(project: Project) {
-    return this.http.delete(this.baseURL + '/' + project.Project_Id);
+    return this.http.get(this.baseURL + '/' + project.Project_Id);
   }
 
 }

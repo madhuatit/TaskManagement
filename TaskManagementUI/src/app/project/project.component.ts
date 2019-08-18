@@ -176,11 +176,12 @@ export class ProjectComponent implements OnInit {
     this.selectedUserName = project.User.First_Name + '' + project.User.Last_Name;
     this.isStartEndDate = true;
     let newStartDate = new Date(this.projectToAdd.Start_Date);
+    let newEndDate = new Date(this.projectToAdd.End_Date);
     var projstartDate, projendDate;
 
     projstartDate = <NgbDateStruct>{ year  : newStartDate.getFullYear(), month : newStartDate.getMonth() + 1,day   : newStartDate.getDate()  };
     this.startDate = projstartDate;
-    projendDate = <NgbDateStruct>{ year  : newStartDate.getFullYear(), month : newStartDate.getMonth() + 1,day   : newStartDate.getDate()  };
+    projendDate = <NgbDateStruct>{ year  : newEndDate.getFullYear(), month : newEndDate.getMonth() + 1,day   : newEndDate.getDate()  };
     this.endDate = projendDate;
     this.isEdit = true;
     this.editProjectId = project.Project_Id;    

@@ -44,12 +44,13 @@ export class ViewTaskComponent implements OnInit {
   refreshTaskList(){
     this.viewTaskService.getTaskList().subscribe((res) =>{
       this.viewTaskService.tasks = res as AddTask[];
+      /* res = null;
       for(var n=0; n< this.viewTaskService.tasks.length; n++){
-        this.addTaskService.getParentForId(this.viewTaskService.tasks[n]).subscribe((res) => {
-          this.selectedParent = res as ParentTask;
-          this.addTaskService.tasks[n].Parent = this.selectedParent;
+        this.addTaskService.getParentForId(this.viewTaskService.tasks[n].Parent).subscribe((resp) => {
+          this.selectedParent = resp as ParentTask;
+          this.viewTaskService.tasks[n].Parent = this.selectedParent;
         })
-      }
+      } */
     });
   }
 

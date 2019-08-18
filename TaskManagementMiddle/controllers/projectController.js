@@ -74,7 +74,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:Project_Id', (req, res) => {
+router.post('/edit/:Project_Id', (req, res) => {
     console.log('Node controller: ' + JSON.stringify(req.params.Project_Id));
       /* if(!ObjectId.isValid(req.params.User_Id)){
         console.log(req.params.User_Id);
@@ -106,7 +106,7 @@ router.put('/:Project_Id', (req, res) => {
     //}
 });
 
-router.delete('/:Project_Id', (req, res) => {
+router.get('/:Project_Id', (req, res) => {
     /* if(!ObjectId.isValid(req.params.User_Id)){
         return res.Status(400).send('No records with given id found: ' + $(req.params.Employee_Id));
     }else{ */

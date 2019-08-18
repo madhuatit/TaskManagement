@@ -98,4 +98,34 @@ describe('ProjectService', () => {
     )
   });
 
+  it ('should update a project', () => {
+    var today = new Date();    
+    const proj: Project = {_id: '5d4b781546ec9c1f24548853', Project_Id: 1, Project_Name: 'TMS',
+    Start_Date: moment(today.getDate()).add(-1, 'months').toDate(),
+    End_Date: moment(today.getDate()+40).add(-1, 'months').toDate(),
+    Priority: 1,
+    User: {User_Id: 1, First_Name: 'Madhu Ranjan', Last_Name: 'Vannia Rajan', Employee_Id: 12345,        
+    Project_Id: 1212, Task_Id: 0, _id: '5d4b781546ec9c1f24548852'}};  
+
+    httpPostSpy.post.and.returnValue(of(proj));
+    userpostservice.putProject(proj).subscribe(
+      data => {expect(proj.Project_Name).toBe('TMS')}
+    )
+  });
+
+  it ('should remove a project', () => {
+    var today = new Date();    
+    const proj: Project = {_id: '5d4b781546ec9c1f24548853', Project_Id: 1, Project_Name: 'TMS',
+    Start_Date: moment(today.getDate()).add(-1, 'months').toDate(),
+    End_Date: moment(today.getDate()+40).add(-1, 'months').toDate(),
+    Priority: 1,
+    User: {User_Id: 1, First_Name: 'Madhu Ranjan', Last_Name: 'Vannia Rajan', Employee_Id: 12345,        
+    Project_Id: 1212, Task_Id: 0, _id: '5d4b781546ec9c1f24548852'}};  
+
+    httpGetSpy.get.and.returnValue(of(proj));
+    projectService.removeProject(proj).subscribe(
+      data => {expect(proj.Project_Name).toBe('TMS')}
+    )
+  });
+
 });

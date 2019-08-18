@@ -27,13 +27,13 @@ export class UserService {
   //add a new user.
   postUser(usr: User) {
     console.log(usr);
-    return this.http.post<Response<User>>(this.baseURL, usr);
+    return this.http.post<Response<User>>(this.baseURL+'/add', usr);
   }
 
   //update the existing user.
   putUser(usr: User) {
     console.log('in user service : ' + usr.User_Id);
-    return this.http.put<Response<User>>(this.baseURL + '/' + usr.User_Id, usr);
+    return this.http.post<Response<User>>(this.baseURL + '/edit/' + usr.User_Id, usr);
   }
 
   //search for users.
@@ -57,6 +57,6 @@ export class UserService {
 
   //delete the user data.
   removeUser(usr: User) {
-    return this.http.delete<Response<User>>(this.baseURL + '/' + usr.Employee_Id);
+    return this.http.get<Response<User>>(this.baseURL + '/delete/' + usr.Employee_Id);
   }
 }

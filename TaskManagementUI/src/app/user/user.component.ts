@@ -34,6 +34,7 @@ export class UserComponent implements OnInit {
     this.userService.getUserList().subscribe(res => {
          
       if (res.Success) {
+        console.log('inside getUserList with size: ' + res.Data.length);
         this.userService.users = res.Data;
       } else {
         this.toastr.error(res.Message);
@@ -72,12 +73,14 @@ export class UserComponent implements OnInit {
       this.userService.postUser(form.value).subscribe((res) => {
         if(res.Success){
           this.toastr.success('User Added successfully');
+          this.resetForm(form);
+          this.getUserList();
         }else{
           this.toastr.error(res.Message);
         }
       });
-      this.resetForm(form);
-      this.getUserList();
+     // this.resetForm(form);
+      //this.getUserList();
       return;
 
     } else {
@@ -85,15 +88,16 @@ export class UserComponent implements OnInit {
       this.userService.putUser(form.value).subscribe((res) => {
         if(res.Success){
           this.toastr.success('User details updated successfully');
+          this.resetForm(form);
+          this.getUserList();
+          this.EditOrAdd = "Add";
         }else{
           this.toastr.error(res.Message);
         }
         
       });
-      this.resetForm(form);
-      this.getUserList();
-      this.EditOrAdd = "Add";
-
+      
+      return;
     }
   }
 

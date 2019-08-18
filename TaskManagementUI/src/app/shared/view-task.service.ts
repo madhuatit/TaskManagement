@@ -23,8 +23,8 @@ export class ViewTaskService {
   }
 
   getTaskForProjectList(Project: any){
-    let parms = new HttpParams().set("proj", Project);
-    return this.http.get(this.baseURL, { params: parms });
+    let params = new HttpParams().set("Project", Project);
+    return this.http.get(this.baseURL, { params: params });
   }
 
   //sort the task list based on key column.

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OnInit, TemplateRef  } from '@angular/core';
 import { ProjectService} from '../shared/project.service';
 
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, NgModel  } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -156,15 +156,17 @@ describe('ProjectComponent', () => {
 
   it('call cancel user', () =>{
     component.cancelUser();
+    expect(component.modalRef.hide);
     expect(component.selectedUser).toBeNull;
   });
 
   it('call select user', ()=>{
+    component.searchText=undefined
     component.selectedUser = user;
     component.selectUser();
     expect(component.selectedUser).not.toBeNull;
     expect(component.projectToAdd.User).toBeDefined;
-    expect(component.searchText).toBe('');
+    expect(component.searchText).toBeDefined;
     expect(component.selectedUsr).toBeNull;
 
   })

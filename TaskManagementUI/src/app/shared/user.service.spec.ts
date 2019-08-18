@@ -124,7 +124,7 @@ describe('UserService', () => {
     )
   }); 
 
-  /* it ('should update existing user', () => {
+   it ('should update existing user', () => {
     const user: User = {
       User_Id: 1,
       First_Name: 'Madhu Ranjan',
@@ -139,6 +139,23 @@ describe('UserService', () => {
     userpostservice.putUser(user).subscribe(
       data => {expect(user.User_Id).toEqual(1)
     });
-  }); */
+  }); 
+
+  it ('should remove existing user', () => {
+    const user: User = {
+      User_Id: 1,
+      First_Name: 'Madhu Ranjan',
+      Last_Name: 'Vannia Rajan',
+      Employee_Id: 12345,        
+      Project_Id: 1212,
+      Task_Id: 0,
+      _id: '5d4b781546ec9c1f24548852'
+    };
+
+    httpGetSpy.get.and.returnValue(of(user));
+    userservice.removeUser(user).subscribe(
+      data => {expect(user.User_Id).toEqual(1)
+    });
+  }); 
 
 });

@@ -12,10 +12,10 @@ router.get('/', (req, res) => {
 
         User.find({ $or: [{ First_Name: { $regex: queryVar.searchKey, $options: 'i' } }, { Last_Name: { $regex: queryVar.searchKey, $options: 'i' } }] }, function (err, docs) {
             if (!err) {
-                res.send({ 'success': true, 'Data': doc });
+                res.send({ 'Success': true, 'Data': docs });
             }
             else {
-                res.send({ 'success': false, 'message': 'Failed to retrieve User' });
+                res.send({ 'Success': false, 'message': 'Failed to retrieve User' });
             }
         });
 
@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
         User.find().sort([[queryVar.sortKey, 1]]).exec(function (err, docs) {
             if (!err) {
-                res.send({ 'Success': true, 'Data': doc });
+                res.send({ 'Success': true, 'Data': docs });
             }
             else {
                 res.send({ 'Success': false, 'message': 'Failed to retrieve User' });
@@ -32,12 +32,12 @@ router.get('/', (req, res) => {
         });
     } else {
         console.log('inside user else part');
-        User.find((err, doc) => {
+        User.find((err, docs) => {
             if (!err) {
-                res.send({ 'success': true, 'Data': doc });
+                res.send({ 'Success': true, 'Data': docs });
             }
             else {
-                res.send({ 'success': false, 'message': 'Failed to retrieve User' });
+                res.send({ 'Success': false, 'message': 'Failed to retrieve User' });
             }
         });
 
@@ -47,14 +47,14 @@ router.get('/', (req, res) => {
 router.get('/:User_Id', (req, res) => {
     console.log(JSON.stringify(req.params.User_Id));
     if (!ObjectId.isValid(req.params.id)) {
-        return res.sendStatus(400).send({ 'success': false, 'message': 'Failed to retrieve User' });
+        return res.sendStatus(400).send({ 'Success': false, 'message': 'Failed to retrieve User' });
     } else {
         User.findById(req.params.id, (err, doc) => {
             if (!err) {
-                res.send({ 'success': true, 'Data': doc });
+                res.send({ 'Success': true, 'Data': doc });
             }
             else {
-                res.send({ 'success': false, 'message': 'Failed to retrieve User' });
+                res.send({ 'Success': false, 'message': 'Failed to retrieve User' });
             }
         });
     }
@@ -63,20 +63,21 @@ router.get('/:User_Id', (req, res) => {
 router.get('/:_id', (req, res) => {
     console.log(JSON.stringify(req.params._id));
     if (!ObjectId.isValid(req.params._id)) {
-        return res.sendStatus(400).send({ 'success': false, 'message': 'Failed to retrieve User' });
+        return res.sendStatus(400).send({ 'Success': false, 'message': 'Failed to retrieve User' });
     } else {
         User.findById(req.params._id, (err, doc) => {
             if (!err) {
-                res.send({ 'success': true, 'Data': doc });
+                res.send({ 'Success': true, 'Data': doc });
             }
             else {
-                res.send({ 'success': false, 'message': 'Failed to retrieve User' });
+                res.send({ 'Success': false, 'message': 'Failed to retrieve User' });
             }
         });
     }
 });
 
-router.post('/', (req, res) => {
+router.post('/add', (req, res) => {
+    console.log('inside router add');
     var usr = new User({
         User_Id: req.body.User_Id,
         First_Name: req.body.First_Name,
@@ -88,15 +89,16 @@ router.post('/', (req, res) => {
 
     usr.save((err, doc) => {
         if (!err) {
-            res.send({ 'success': true, 'Data': doc });
+            res.send({ 'Success': true, 'Data': doc });
         } else {
-            res.send({ 'success': false, 'message': 'Failed to add User' });
+            res.send({ 'Success': false, 'message': 'Failed to add User' });
         }
     });
 });
 
-router.put('/:User_Id', (req, res) => {
+router.post('/edit/:User_Id', (req, res) => {
 
+    console.log('inside router edit');
     var usr = {
         User_Id: req.body.User_Id,
         First_Name: req.body.First_Name,
@@ -107,21 +109,21 @@ router.put('/:User_Id', (req, res) => {
     };
     User.findOneAndUpdate(req.params.User_Id, { $set: usr }, { new: true }, (err, doc) => {
         if (!err) {
-            res.send({ 'success': true, 'Data': doc });
+            res.send({ 'Success': true, 'Data': doc });
         } else {
-            res.send({ 'success': false, 'message': 'Failed to update User' });
+            res.send({ 'Success': false, 'message': 'Failed to update User' });
         }
     });
 
 });
 
-router.delete('/:Employee_Id', (req, res) => {
+router.get('/delete/:Employee_Id', (req, res) => {
 
     User.deleteOne({ Employee_Id: req.params.Employee_Id }, function (err, docs) {
         if (!err) {
-            res.send({ 'success': true, 'Data': doc });
+            res.send({ 'Success': true, 'Data': docs });
         } else {
-            res.send({ 'success': false, 'message': 'Failed to delete User' });
+            res.send({ 'Success': false, 'message': 'Failed to delete User' });
         }
     })
 

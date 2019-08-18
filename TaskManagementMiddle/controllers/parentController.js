@@ -19,20 +19,24 @@ router.get('/:Parent_Id', (req, res) => {
 
 router.get('/:_id', (req, res) => {
     console.log(JSON.stringify(req.params._id));
-     if(!ObjectId.isValid(req.params._id)){
-        return res.status(400).send('No records for given user id: $(req.params.id)');
-    }else{
+    if (!ObjectId.isValid(req.params._id)) {
+        return res.sendStatus(400).send({ 'Success': false, 'message': 'Failed to retrieve User' });
+    } else {
         Parent.findById(req.params._id, (err, doc) => {
-            if(!err) return res.send(doc);
-            else console.log('Error in retrieving User' + JSON.stringify(err, undefined, 2));
+            if (!err) {
+                res.send(doc);
+            }
+            else {
+                res.send(err);
+            }
         });
-    } 
+    }
 });
 
 router.get('/', (req, res) => {
     
     var queryVar = req.query;
-    console.log('search value: ' + queryVar.searchKey);
+    console.log('search value: ' + queryVar._id);
     
     if(queryVar.searchKey){
 
@@ -45,6 +49,11 @@ router.get('/', (req, res) => {
         });
 
         
+    }else if(queryVar._id){
+        Parent.find({_id : req.params._id}, (err, doc) => {
+            if(!err) return res.send(doc);
+            else console.log('Error in retrieving parent' + JSON.stringify(err, undefined, 2));
+        });
     }else{
         Parent.find((err, docs) => {
             if(!err) {

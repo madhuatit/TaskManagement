@@ -10,7 +10,7 @@ router.get('/:proj', (req, res) => {
     if(!ObjectId.isValid(req.params.Project)){
         return res.Status(400).send('No records with given Id found :' + $(req.params.Project));
     }
-
+    console.log('requested value: ' + req.params.Project);
     Task.findById(req.params.Project, (err, doc) => {
         if(!err){
             res.send(doc);
@@ -22,7 +22,7 @@ router.get('/:proj', (req, res) => {
 
 router.get('/', (req, res) => {
     var queryVar = req.query;
-    console.log('Madhu'+JSON.stringify(req.params.Project));
+    console.log('Madhu'+JSON.stringify(queryVar.Project));
     if(queryVar.sortKey){
 
         Task.find().sort([[queryVar.sortKey, 1]]).exec(function(err, docs) {
@@ -30,6 +30,14 @@ router.get('/', (req, res) => {
                 res.send(docs);
             }else{
                 console.log('error while sorting' + JSON.stringify(err, undefined, 2))
+            }
+        });
+    }else if(queryVar.Project){
+        Task.find({Project : queryVar.Project}, (err, doc) => {
+            if(!err){
+                res.send(doc);
+            }else{
+                console.log('Error in Retriving Employee: ' + JSON.stringify(err, undefined, 2));
             }
         });
     }else{
