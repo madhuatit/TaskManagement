@@ -8,6 +8,13 @@ const Schema = mongoose.Schema;
     Project_Id: {type: Number}
 });
 
+parentSchema
+.virtual('Task', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'parent'
+});
+
 parentSchema.plugin(keyInc, {inc_field: 'Parent_Id'});
 
 var Parent = mongoose.model('Parent', parentSchema); 

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
  var taskSchema = new mongoose.Schema({
     Task_Id: {type : Number},
-    Parent: {type : Schema.Types.ObjectId, ref: 'parent'},
+    Parent: {type : Schema.Types.Object, ref: 'Parent'},
     Project: {type : Schema.Types.ObjectId, ref: 'project'},
     Task_Name: {type : String},
     Start_Date: {type : Date},
