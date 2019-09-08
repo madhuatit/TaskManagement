@@ -76,7 +76,7 @@ export class ProjectComponent implements OnInit {
 
   //cancel pop-up of selecting user.
   cancelUser(){
-    this.modalRef.hide();
+    //this.modalRef.hide();
     this.selectedUsr=null;    
   }
 
