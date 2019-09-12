@@ -76,7 +76,7 @@ export class ProjectComponent implements OnInit {
 
   //cancel pop-up of selecting user.
   cancelUser(){
-    //this.modalRef.hide();
+    this.modalRef.hide();
     this.selectedUsr=null;    
   }
 
@@ -139,10 +139,11 @@ export class ProjectComponent implements OnInit {
       
       this.projectToAdd.Project_Id = this.editProjectId;
       this.projectService.putProject(this.projectToAdd).subscribe((res) => {
+        this.getProjectList();
+        this.resetForm();
         this.toastr.success('Project Updated Successfully');
       });
-      this.getProjectList();
-      this.resetForm();
+      
     }  
   }
 

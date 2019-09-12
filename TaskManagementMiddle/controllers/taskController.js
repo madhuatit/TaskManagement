@@ -85,7 +85,6 @@ router.put('/:Task_Id', (req, res) => {
                 console.log('Error in Putting Task: ' + JSON.stringify(err, undefined, 2));
             }else{
                 if(taskData){
-                    console.log(JSON.stringify(req.body.Parent));
                     taskData.Parent= req.body.Parent,
                     taskData.Project= req.body.Project,
                     taskData.Task_Name= req.body.Task_Name,
@@ -125,8 +124,6 @@ router.delete('/:id', (req, res) => {
 router.post('/', (req, res) => {
     let taskData = req.body;
     let task = new Task(taskData);
-
-    console.log(JSON.stringify(taskData));
     task.save((err, taskData) => {
         if(!err){
             res.send(taskData);

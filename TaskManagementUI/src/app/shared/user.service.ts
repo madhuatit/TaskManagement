@@ -20,26 +20,22 @@ export class UserService {
 
   //retrieve all the users.
   getUserList() {
-    console.log('getUserList called');
     return this.http.get<Response<User[]>>(this.baseURL);
   }
 
   //add a new user.
   postUser(usr: User) {
-    console.log(usr);
     return this.http.post<Response<User>>(this.baseURL+'/add', usr);
   }
 
   //update the existing user.
   putUser(usr: User) {
-    console.log('in user service : ' + usr.User_Id);
     return this.http.post<Response<User>>(this.baseURL + '/edit/' + usr.User_Id, usr);
   }
 
   //search for users.
   getSearchUserList(searchKey: string) {
     let params = new HttpParams().set("searchKey", searchKey);
-    //params.append('searchKey', searchKey);
     return this.http.get<Response<User[]>>(this.baseURL, { params: params });
   }
 

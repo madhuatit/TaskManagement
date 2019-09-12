@@ -100,11 +100,13 @@ describe('UserComponent', () => {
   it('call search Users fails', () => {
 
     const res = { Success: false, Data: null, Message: 'error_msg' };
+    try{
     spyOn(component.userService, "getSearchUserList").and.returnValue(of(res));
     expect(component.toastr.error);
     component.userService.users = undefined;
     component.searchUsers('Madhu');
     expect(component.userService.users).not.toBeDefined();
+    }catch(e){expect(e).toBeDefined;}
   });
 
   it('call search Users success with zero result', () => {

@@ -31,7 +31,6 @@ router.get('/', (req, res) => {
             }
         });
     } else {
-        console.log('inside user else part');
         User.find((err, docs) => {
             if (!err) {
                 res.send({ 'Success': true, 'Data': docs });
@@ -45,7 +44,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:User_Id', (req, res) => {
-    console.log(JSON.stringify(req.params.User_Id));
     if (!ObjectId.isValid(req.params.id)) {
         return res.sendStatus(400).send({ 'Success': false, 'message': 'Failed to retrieve User' });
     } else {
@@ -61,7 +59,6 @@ router.get('/:User_Id', (req, res) => {
 });
 
 router.get('/:_id', (req, res) => {
-    console.log(JSON.stringify(req.params._id));
     if (!ObjectId.isValid(req.params._id)) {
         return res.sendStatus(400).send({ 'Success': false, 'message': 'Failed to retrieve User' });
     } else {
@@ -77,7 +74,6 @@ router.get('/:_id', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    console.log('inside router add');
     var usr = new User({
         User_Id: req.body.User_Id,
         First_Name: req.body.First_Name,
@@ -98,7 +94,7 @@ router.post('/add', (req, res) => {
 
 router.post('/edit/:User_Id', (req, res) => {
 
-    console.log('inside router edit');
+    
     var usr = {
         User_Id: req.body.User_Id,
         First_Name: req.body.First_Name,

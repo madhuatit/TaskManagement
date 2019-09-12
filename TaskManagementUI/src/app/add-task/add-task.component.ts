@@ -50,6 +50,7 @@ export class AddTaskComponent implements OnInit {
     public userService: UserService, public toastr: ToastrService) {
     this.taskToAdd = new AddTask();
     this.isParentTask = false;
+    
 
     if (route.snapshot.params['task']) {
       this.taskToAdd = JSON.parse(route.snapshot.params['task']);
@@ -61,6 +62,8 @@ export class AddTaskComponent implements OnInit {
       this.startDate = tskStrtDate;
       tskEndDate = <NgbDateStruct>{ year  : updEndDt.getFullYear(), month : updEndDt.getMonth() + 1,day   : updEndDt.getDate()  };
       this.endDate = tskEndDate;
+
+      this.selectedParentTask = this.taskToAdd.Parent.Parent_Task;
 
       this.userService.getUserList().subscribe((res)=>{
         this.users = res.Data as User[];
@@ -96,6 +99,7 @@ export class AddTaskComponent implements OnInit {
     this.selectedUserName = null;
     this.selectedParentTask = null;
     this.taskToAdd.Priotity = 0;
+    this.buttonName = 'AddTask';
   }
 
   //adding a new task/Parent task.
@@ -137,8 +141,7 @@ export class AddTaskComponent implements OnInit {
     }
 
     if (this.isParentTask) {
-      console.log(this.taskToAdd.Task_Name);
-      const newParent = <ParentTask>{
+        const newParent = <ParentTask>{
         Parent_Task: this.taskToAdd.Task_Name,
         Project_Id: this.taskToAdd.Project.Project_Id
       };
@@ -168,13 +171,11 @@ export class AddTaskComponent implements OnInit {
     if (type === 1) {
 
       this.projectService.getProjectList().subscribe((res) => {
-        console.log(res);
         this.projects = res as Project[];
         this.modalRef = this.modalService.show(template);
 
       },
         (error) => {
-          console.log(error);
         });
 
     } else if (type == 2) {
@@ -218,7 +219,6 @@ export class AddTaskComponent implements OnInit {
   //select a user object.
   selectUser() {
     if (this.selectedUsr != null) {
-      console.log(this.selectedUsr.User_Id);
       this.taskToAdd.User = this.selectedUsr;
 
       this.selectedUserName = this.selectedUsr.First_Name + ' ' + this.selectedUsr.Last_Name;
@@ -253,7 +253,6 @@ export class AddTaskComponent implements OnInit {
   //selecting the parent object.
   selectParent() {
     if (this.selectedPar != null) {
-      console.log(this.selectedPar.Parent_Id);
       this.taskToAdd.Parent = this.selectedPar;
 
       this.selectedParentTask = this.selectedPar.Parent_Task;
@@ -265,7 +264,6 @@ export class AddTaskComponent implements OnInit {
 
   //searching the projects.
   searchProject(searchKey: string) {
-    console.log('search value: ' + searchKey);
 
     this.projectService.getSearchProjectList(searchKey).subscribe((res) => {
 
@@ -276,15 +274,15 @@ export class AddTaskComponent implements OnInit {
 
   //cancel the project model.
   cancelProj() {
-    this.modalRef.hide();
+    
     this.selectedProj = null;
+    this.modalRef.hide();
 
   }
 
   //selecting the project object.
   selectProj() {
     if (this.selectedProj != null) {
-      console.log(this.selectedProj.Project_Id);
       this.taskToAdd.Project = this.selectedProj;
 
       this.selectedProjName = this.selectedProj.Project_Name;

@@ -21,7 +21,9 @@ export class ViewTaskComponent implements OnInit {
   constructor(public viewTaskService: ViewTaskService, public projectService: ProjectService,
     public modalService: BsModalService, private route: ActivatedRoute,
     public toastr: ToastrService, private router: Router,
-    private addTaskService: AddTaskService) { }
+    private addTaskService: AddTaskService) { 
+      
+    }
 
   modalRef: BsModalRef;
   projects: Array<Project>;
@@ -44,13 +46,6 @@ export class ViewTaskComponent implements OnInit {
   refreshTaskList(){
     this.viewTaskService.getTaskList().subscribe((res) =>{
       this.viewTaskService.tasks = res as AddTask[];
-      /* res = null;
-      for(var n=0; n< this.viewTaskService.tasks.length; n++){
-        this.addTaskService.getParentForId(this.viewTaskService.tasks[n].Parent).subscribe((resp) => {
-          this.selectedParent = resp as ParentTask;
-          this.viewTaskService.tasks[n].Parent = this.selectedParent;
-        })
-      } */
     });
   }
 
@@ -58,7 +53,6 @@ export class ViewTaskComponent implements OnInit {
   openModal(template: TemplateRef<any>, type: number) {
     if (type === 1) {
       this.projectService.getProjectList().subscribe((res) => {
-        console.log(res);
         this.projects = res as Project[];
         this.modalRef = this.modalService.show(template);
       },
@@ -78,7 +72,6 @@ export class ViewTaskComponent implements OnInit {
   //selecting the project object.
   selectProj() {
     if (this.selectedProj != null) {
-      console.log(this.selectedProj.Project_Name);
       this.selectedProjName = this.selectedProj.Project_Name;
       this.taskProj = this.selectedProj._id;
       this.selectedProj = null;

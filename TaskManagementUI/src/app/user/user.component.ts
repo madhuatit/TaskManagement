@@ -34,7 +34,6 @@ export class UserComponent implements OnInit {
     this.userService.getUserList().subscribe(res => {
          
       if (res.Success) {
-        console.log('inside getUserList with size: ' + res.Data.length);
         this.userService.users = res.Data;
       } else {
         this.toastr.error(res.Message);
@@ -44,7 +43,6 @@ export class UserComponent implements OnInit {
 
   //reset the form.
   resetForm(form?: NgForm) {
-    console.log('reset function called')
     if (form) {
       form.reset();
       this.getUserList();
@@ -138,13 +136,14 @@ export class UserComponent implements OnInit {
   deleteUser(usr: User) {
     this.userService.removeUser(usr).subscribe((res) => {
       if(res.Success){
+        this.getUserList();
         this.toastr.success('User deleted Successfully');
       }else{
         this.toastr.error(res.Message);
       }
       
     });
-    this.getUserList();
+    
     this.EditOrAdd = "Add";
   }
 

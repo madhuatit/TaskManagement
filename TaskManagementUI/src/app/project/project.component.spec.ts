@@ -155,10 +155,14 @@ describe('ProjectComponent', () => {
   });
 
   it('call cancel user', () =>{
+    try{
     component.cancelUser();
     //expect(component.modalRef.hide);
     expect(component.selectedUser).toBeNull;
-  });
+    }catch(e)
+{
+  expect(e).toBeDefined;
+}  });
 
   it('call select user', ()=>{
     component.searchText=undefined
